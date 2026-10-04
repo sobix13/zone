@@ -1,0 +1,43 @@
+MELEE ZONE HOTFIX 2026-07-10
+
+Fixed
+- Assignment modal labels now fit Discord's 45-character limit.
+- Review modal had another over-limit label; it is fixed too.
+- Raffle role grant now uses Discord's correct Member.add_roles API.
+- Raffle and quiz role removal now use Member.remove_roles.
+- Quiz pass role grant now uses Member.add_roles.
+- Raffle command and panel fetch uncached members when needed.
+- Raffle tools now report missing Manage Roles and role hierarchy problems.
+- Raffle failures are logged instead of being silently hidden.
+- Assignment creation checks channel and thread permissions first.
+- A thread is rolled back if its assignment cannot be saved to the database.
+
+UI naming cleanup
+- Review distribution is now named Distribute Reviews.
+- Thread-based assignments are now named Community Tasks.
+- Assignment Manager is now Community Task Manager.
+
+Deployment
+1. Back up the current /root/Melee-Zone directory.
+2. Replace the project files with this package.
+3. Keep the server's current .env and bot.db files.
+4. Restart: sudo systemctl restart melee-zone
+5. Check: sudo journalctl -u melee-zone -n 100 --no-pager
+
+Discord requirement for raffle roles
+- The bot needs Manage Roles.
+- The Melee Zone bot role must be above the raffle role in Server Settings > Roles.
+
+Unified UI update
+- Admin Panel now has five top-level sections: Overview, Content, Rewards, Setup, Guide.
+- /setup opens one Setup Center for old and new features.
+- Full Configuration displays every role, channel, score reward, quiz reward,
+  reaction, raffle setting, limit, timing value, name, and branding value.
+- Roles and channels are selected directly inside the Setup Center.
+- Review, score, bonus, quiz, timing, and X requirements are editable in Discord.
+- Names, automated messages, reaction values, and About remain editable through
+  the Names & Messages section in Setup Center.
+- /setup_view now opens the complete configuration instead of the old partial view.
+- /admin_guide and the Admin Panel use the same categorized guide.
+- Old slash commands remain available for compatibility and do not erase data.
+- New commands sync after the bot is ready in every connected guild.

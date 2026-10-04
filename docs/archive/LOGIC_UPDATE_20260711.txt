@@ -1,0 +1,27 @@
+MELEE ZONE LOGIC UPDATE 2026-07-11
+
+Implemented
+- Score MC tiers: 4–under 6, 6–under 8, and 8–10.
+- Default tier rewards: 1, 3, and 5 MC. Editable in /setup.
+- Full weekly submission capacity reward: 2 MC. Editable in /setup.
+- X /i/status links and query strings are accepted.
+- Duplicate detection uses X status ID across the user's full history.
+- Database key blocks simultaneous duplicate submissions.
+- Review insert and assignment completion use one transaction.
+- Unique reward keys prevent duplicate automated payments.
+- Existing admin reaction rewards remain independent.
+- Each post stores its required review count at submission time.
+- Open posts roll into the next weekly distribution until finalized.
+- Partial posts receive only their missing review assignments.
+- Five-day primary period, 12-hour warning, and rescue reassignment.
+- Ready for More reviewers receive rescue work with a separate weekly limit.
+- Replacement reviewers get at least 24 hours.
+- Weekly scheduling recalculates by week instead of drifting every 168 hours.
+- Minimum feedback defaults to 30 characters.
+
+Safety
+- Migration only adds columns, indexes, and one deduplication key table.
+- Existing users, posts, reviews, transactions, MC, roles, and channels remain.
+- Existing MC is not recalculated.
+- Old duplicate links are not deleted.
+- This install package excludes .env and all bot.db files.
