@@ -1,0 +1,3 @@
+faf61645d1372e348b6648de7998a5201913f697fd5a0423d24fb6370a07b600  Melee-Zone-V3-update.tar.gz
+cc7df58924903f9db4731bc3cea20743a9de501bb861cc9bd7de37d70ef70646  Melee-Zone-V3-repository.zip
+20a0603d191b83c31caffed175821f799d0b41d96fb9fff51636458508c5ce20  Melee-Zone-Moderator-Manual.html
