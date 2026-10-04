@@ -1,0 +1,29 @@
+# Example only. install.sh generates units using the actual app path and Python environment.
+[Unit]
+Description=Melee Zone bot
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=900
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=melee-zone
+WorkingDirectory=/opt/melee-zone
+ExecStart=/opt/melee-zone/venv/bin/python -u /opt/melee-zone/bot.py
+Environment=MZ_SERVICE=melee-zone.service
+Restart=on-failure
+RestartSec=15
+TimeoutStopSec=25
+UMask=0077
+PrivateTmp=true
+ProtectSystem=full
+MemoryHigh=384M
+MemoryMax=768M
+TasksMax=128
+LimitNOFILE=8192
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
