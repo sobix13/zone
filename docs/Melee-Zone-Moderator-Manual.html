@@ -1,1476 +1,394 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Melee Zone V3 moderator reference</title><style>
-:root{--ink:#29343b;--brand:#79323d;--muted:#647179;--paper:#fff;--line:#e7dddd}
-*{box-sizing:border-box}body{margin:0;color:var(--ink);background:#f8f5f5;font:16px/1.65 system-ui,-apple-system,Segoe UI,Arial,sans-serif}
-header{background:var(--brand);color:white;padding:30px 40px}header h1{font-size:29px;line-height:1.25;margin:0 0 10px}header p{margin:0;color:#f5e8ea}
-.layout{max-width:1490px;margin:auto;display:grid;grid-template-columns:280px minmax(0,1fr);gap:26px;padding:28px 30px}
-nav{position:sticky;top:18px;height:calc(100vh - 36px);overflow:auto;font-size:13px;padding:12px 15px;background:#fff;border:1px solid var(--line);border-radius:10px}
-nav ul{list-style:none;padding-left:10px}nav>ul{padding-left:0}nav a{color:var(--brand);text-decoration:none}nav li{margin:6px 0}
-main{background:var(--paper);padding:28px 42px;border:1px solid var(--line);border-radius:10px;min-width:0}
-h1{font-size:28px;line-height:1.25;color:var(--brand);margin:48px 0 16px;border-top:3px solid var(--line);padding-top:26px}main>h1:first-child{margin-top:0;border:0;padding:0}
-h2{font-size:22px;line-height:1.35;color:var(--brand);margin:34px 0 12px}h3{font-size:18px;line-height:1.35;margin:25px 0 9px}
-p{margin:10px 0 17px}a{color:var(--brand);overflow-wrap:anywhere}strong{font-weight:650}code{font-size:.88em;background:#f5f0f1;padding:2px 5px;border-radius:3px}
-pre{background:#f5f0f1;border-left:3px solid var(--brand);padding:15px;overflow:auto;border-radius:3px;white-space:pre-wrap;overflow-wrap:anywhere}pre code{padding:0;background:transparent}
-table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.5;margin:18px 0 24px}th{text-align:left;background:#f2e8ea;color:var(--brand)}th,td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}
-li{margin:6px 0}hr{border:0;border-top:1px solid var(--line);margin:30px 0}footer{text-align:center;color:var(--muted);font-size:13px;padding:20px}
-@media(max-width:900px){.layout{display:block;padding:15px}nav{position:static;height:auto;max-height:280px;margin-bottom:18px}main{padding:22px}header{padding:25px}table{display:block;overflow-x:auto}}
-@media print{@page{size:A4;margin:15mm}body{background:white;font-size:10pt}header{background:white;color:var(--brand);padding:0}header p{color:var(--muted)}.layout{display:block;padding:0}nav{display:none}main{padding:0;border:0;border-radius:0}h1{break-before:page}main>h1:first-child{break-before:auto}h1,h2,h3{break-after:avoid}thead{display:table-header-group}tr{break-inside:avoid}pre{font-size:9pt}footer{display:none}}
-</style></head><body><header><h1>Melee Zone V3</h1><p>Moderator reference, member training, operations and recovery | Version 3.0.0</p></header><div class="layout"><nav aria-label="Contents"><strong>Contents</strong><div class="toc">
-<ul>
-<li><a href="#melee-zone-moderator-manual">Melee Zone moderator manual</a><ul>
-<li><a href="#purpose-and-authority">Purpose and authority</a></li>
-<li><a href="#before-operating-a-shift">Before operating a shift</a></li>
-<li><a href="#panel-map">Panel map</a></li>
-<li><a href="#mc-awards">MC awards</a></li>
-<li><a href="#community-task-threads">Community task threads</a></li>
-<li><a href="#submissions-assigned-reviews-and-showcase">Submissions, assigned reviews and showcase</a></li>
-<li><a href="#leaderboard-and-legacy-exports">Leaderboard and legacy exports</a></li>
-<li><a href="#quiz-and-raffle">Quiz and raffle</a></li>
-<li><a href="#role-analysis-and-excel">Role analysis and Excel</a></li>
-<li><a href="#onboarding-meleeionaires">Onboarding Meleeionaires</a></li>
-<li><a href="#troubleshooting-a-reported-issue">Troubleshooting a reported issue</a></li>
-<li><a href="#member-questions-and-suggested-answers">Member questions and suggested answers</a></li>
-<li><a href="#escalation-record">Escalation record</a></li>
-</ul>
-</li>
-<li><a href="#melee-zone-member-and-meleeionaires-guide">Melee Zone member and Meleeionaires guide</a><ul>
-<li><a href="#your-first-five-minutes">Your first five minutes</a></li>
-<li><a href="#submitting-useful-work">Submitting useful work</a></li>
-<li><a href="#completing-a-review">Completing a review</a></li>
-<li><a href="#understanding-mc">Understanding MC</a></li>
-<li><a href="#community-tasks-and-quiz">Community tasks and quiz</a></li>
-<li><a href="#getting-help">Getting help</a></li>
-</ul>
-</li>
-<li><a href="#melee-zone-operations-and-recovery">Melee Zone operations and recovery</a><ul>
-<li><a href="#processes-and-ownership">Processes and ownership</a></li>
-<li><a href="#health-definitions">Health definitions</a></li>
-<li><a href="#first-recovery-setup">First recovery setup</a></li>
-<li><a href="#owner-recovery-when-the-main-bot-is-stopped">Owner recovery when the main bot is stopped</a></li>
-<li><a href="#server-console-fallback">Server-console fallback</a></li>
-<li><a href="#safe-repair-policy">Safe repair policy</a></li>
-<li><a href="#backup-upgrade-and-rollback">Backup, upgrade and rollback</a></li>
-<li><a href="#operational-fault-table">Operational fault table</a></li>
-<li><a href="#retention-and-capacity">Retention and capacity</a></li>
-</ul>
-</li>
-<li><a href="#root-causes-and-corrections">Root causes and corrections</a><ul>
-<li><a href="#mc-reactions-in-community-task-threads">MC reactions in community task threads</a></li>
-<li><a href="#cooldown-also-restricting-admins">Cooldown also restricting admins</a></li>
-<li><a href="#what-the-720-hour-limit-meant">What the 720-hour limit meant</a></li>
-<li><a href="#additional-integrity-corrections">Additional integrity corrections</a></li>
-<li><a href="#primary-documentation">Primary documentation</a></li>
-</ul>
-</li>
-<li><a href="#registered-command-reference">Registered command reference</a><ul>
-<li><a href="#admin_guide">/admin_guide</a></li>
-<li><a href="#admin_panel">/admin_panel</a></li>
-<li><a href="#message-action-award-1-mc">Message action: Award 1 MC</a></li>
-<li><a href="#message-action-award-mc">Message action: Award MC</a></li>
-<li><a href="#backup">/backup</a></li>
-<li><a href="#doctor">/doctor</a></li>
-<li><a href="#export_data">/export_data</a></li>
-<li><a href="#give_mc">/give_mc</a></li>
-<li><a href="#give_raffle">/give_raffle</a></li>
-<li><a href="#guide">/guide</a></li>
-<li><a href="#health">/health</a></li>
-<li><a href="#leaderboard">/leaderboard</a></li>
-<li><a href="#manual_assign">/manual_assign</a></li>
-<li><a href="#mc_audit">/mc_audit</a></li>
-<li><a href="#mc_reconcile">/mc_reconcile</a></li>
-<li><a href="#my_mc">/my_mc</a></li>
-<li><a href="#my_reviews">/my_reviews</a></li>
-<li><a href="#my_submits">/my_submits</a></li>
-<li><a href="#onboard">/onboard</a></li>
-<li><a href="#panel">/panel</a></li>
-<li><a href="#quick_start">/quick_start</a></li>
-<li><a href="#recovery_setup">/recovery_setup</a></li>
-<li><a href="#register_twitter">/register_twitter</a></li>
-<li><a href="#review">/review</a></li>
-<li><a href="#review_skip">/review_skip</a></li>
-<li><a href="#revoke_all_raffle">/revoke_all_raffle</a></li>
-<li><a href="#role_report">/role_report</a></li>
-<li><a href="#role_report_cancel">/role_report_cancel</a></li>
-<li><a href="#role_report_resume">/role_report_resume</a></li>
-<li><a href="#role_report_status">/role_report_status</a></li>
-<li><a href="#setup">/setup</a></li>
-<li><a href="#setup_assignment_channel">/setup_assignment_channel</a></li>
-<li><a href="#setup_channels">/setup_channels</a></li>
-<li><a href="#setup_leaderboard">/setup_leaderboard</a></li>
-<li><a href="#setup_quiz_role">/setup_quiz_role</a></li>
-<li><a href="#setup_raffle_reaction">/setup_raffle_reaction</a></li>
-<li><a href="#setup_raffle_role">/setup_raffle_role</a></li>
-<li><a href="#setup_reactions">/setup_reactions</a></li>
-<li><a href="#setup_reset">/setup_reset</a></li>
-<li><a href="#setup_roles">/setup_roles</a></li>
-<li><a href="#setup_settings">/setup_settings</a></li>
-<li><a href="#setup_start">/setup_start</a></li>
-<li><a href="#setup_view">/setup_view</a></li>
-<li><a href="#snapshot_1">/snapshot</a></li>
-<li><a href="#stats">/stats</a></li>
-<li><a href="#submit">/submit</a></li>
-<li><a href="#task_reset_cooldown">/task_reset_cooldown</a></li>
-<li><a href="#user_info">/user_info</a></li>
-</ul>
-</li>
-<li><a href="#live-discord-acceptance-after-installation">Live Discord acceptance after installation</a></li>
-<li><a href="#rollout-and-roadmap">Rollout and roadmap</a><ul>
-<li><a href="#included-in-v3">Included in V3</a></li>
-<li><a href="#first-deployment">First deployment</a></li>
-<li><a href="#next-operational-improvements">Next operational improvements</a></li>
-<li><a href="#maintaining-the-reference">Maintaining the reference</a></li>
-</ul>
-</li>
-</ul>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Melee Zone moderator handbook for Discord panels, review support, MC and member questions.">
+<title>Melee Zone Moderator Handbook</title>
+<style>
+:root{--brand:#79323d;--ink:#29343b;--muted:#66727a;--paper:#fff;--wash:#f8f5f5;--line:#e7dddd;--tint:#f3e9eb;--focus:#b76129}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--wash);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}button,input{font:inherit}a{color:var(--brand);text-underline-offset:3px}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.skip-link{position:absolute;left:16px;top:-80px;background:white;padding:10px 16px;z-index:10}.skip-link:focus{top:12px}header{background:var(--brand);color:white;padding:34px max(24px,calc((100vw - 1320px)/2))}header h1{margin:0 0 10px;font-size:clamp(26px,3vw,36px);line-height:1.2}header p{max-width:820px;margin:0;color:#f6e9ec;font-size:17px}
+.layout{max-width:1380px;margin:auto;padding:28px 30px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:26px}aside{position:sticky;top:20px;align-self:start;max-height:calc(100vh - 40px);overflow:auto;background:white;border:1px solid var(--line);border-radius:12px;padding:20px}.search-label{display:block;font-weight:650;margin-bottom:7px}#search{width:100%;border:1px solid #b8a5aa;border-radius:6px;padding:10px;font-size:15px}.search-hint,.search-status{font-size:13px;color:var(--muted);line-height:1.5;margin:8px 0 12px}.tools{display:flex;gap:8px;flex-wrap:wrap}button{cursor:pointer;border:1px solid var(--line);border-radius:6px;background:var(--tint);color:var(--brand);padding:6px 11px;font-size:13px;font-weight:600}nav{margin-top:24px}nav h2{font-size:15px;margin:0 0 12px;color:var(--ink)}nav ol{list-style:none;margin:0;padding:0;counter-reset:contents}nav li{margin:5px 0}nav a{display:block;padding:5px 0;text-decoration:none;font-size:14px;line-height:1.45}nav a:hover{text-decoration:underline}nav a::before{counter-increment:contents;content:counter(contents,decimal-leading-zero) " ";font-size:12px;color:var(--muted);padding-right:6px}
+main{min-width:0;background:white;border:1px solid var(--line);border-radius:12px;padding:32px 42px}section{margin:0 0 48px;scroll-margin-top:24px}section:last-child{margin-bottom:0}h2{color:var(--brand);font-size:25px;line-height:1.25;margin:0 0 18px;padding-bottom:12px;border-bottom:1px solid var(--line)}h3{font-size:19px;line-height:1.35;margin:28px 0 10px;color:var(--ink)}p{margin:8px 0 15px}li{margin:6px 0}strong{font-weight:650}code{font:0.9em/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;background:#f5f0f1;border-radius:3px;padding:2px 5px;overflow-wrap:anywhere}table{border-collapse:collapse;width:100%;margin:14px 0 20px;font-size:14px;line-height:1.5}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:top;overflow-wrap:anywhere}th{background:var(--tint);color:var(--brand);text-align:left}th:first-child,td:first-child{width:31%}tbody tr:nth-child(even){background:#fbf9f9}.qa{margin:20px 0 25px}.qa h3{margin:0 0 8px;font-size:17px}.reply{border-left:3px solid #cfb4ba;padding-left:15px;color:#455059}.unit{margin-bottom:20px}.unit:last-child{margin-bottom:0}mark{background:#ffedab;color:#21272b;border-radius:2px;padding:0 1px}#empty{padding:20px 0;color:var(--muted)}[hidden]{display:none!important}footer{text-align:center;font-size:13px;color:var(--muted);padding:0 20px 26px}.back-top{font-size:13px;display:inline-block;margin-top:10px}
+#scoring th:first-child,#scoring td:first-child{width:14%}
+@media(max-width:900px){.layout{display:block;padding:18px}aside{position:static;max-height:none;margin-bottom:18px;padding:18px}nav ol{columns:2;column-gap:24px}nav li{break-inside:avoid}main{padding:26px}header{padding:28px 22px}h2{font-size:23px}}
+@media(max-width:520px){body{font-size:15px}.layout{padding:12px}main{padding:22px 16px}nav ol{columns:1}table{font-size:13px}th,td{padding:8px}th:first-child,td:first-child{width:35%}h3{font-size:18px}code{word-break:break-word}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{@page{size:Letter;margin:18mm}html{scroll-behavior:auto}body{background:white;font-size:10.5pt;line-height:1.5}header{background:white;color:black;padding:0 0 20px}header h1{font-size:24pt}header p{color:#444;font-size:11pt}.layout{display:block;padding:0}aside,footer,.back-top,.skip-link,#empty{display:none!important}main{padding:0;border:0}section{margin:0 0 26px}h2{color:black;font-size:17pt;border:0;padding:0;break-after:avoid}h3{color:black;font-size:12pt;break-after:avoid}table{font-size:9.5pt}thead{display:table-header-group}tr{break-inside:avoid}th,td{padding:7px;border-color:#ccc}th{color:black;background:#eee}mark{background:transparent}.reply{border:0;padding-left:0}a{color:black;text-decoration:none}section[hidden],.unit[hidden]{display:block!important}}
+</style>
+</head>
+<body id="top">
+<a class="skip-link" href="#handbook">Skip to handbook</a>
+<header><h1>Melee Zone Moderator Handbook</h1><p>Use the Discord panels, support reviewers and answer member questions. Find the right action before you change a reward or close a task.</p></header>
+<div class="layout">
+<aside aria-label="Handbook navigation">
+<label class="search-label" for="search">Search this handbook</label>
+<input id="search" type="search" placeholder="Try MC, skip or Team messages" autocomplete="off" aria-describedby="search-hint search-status">
+<p class="search-hint" id="search-hint">Search button names, commands or questions. Multiple words narrow the results. Ctrl or Cmd + K opens search.</p>
+<div class="tools"><button id="clear" type="button">Clear search</button><button id="print" type="button">Print handbook</button></div>
+<p class="search-status" id="search-status" role="status" aria-live="polite"></p>
+<noscript><p class="search-hint">The full handbook is readable here. Use your browser Find command to search.</p></noscript>
+<nav aria-label="Contents"><h2>Contents</h2><ol>
+<li><a href="#start">Start here</a></li>
+<li><a href="#member-panel">Member panel buttons</a></li>
+<li><a href="#submissions">Submissions and results</a></li>
+<li><a href="#reviews">Assigned reviews</a></li>
+<li><a href="#moderator-support">Weekly moderator support</a></li>
+<li><a href="#scoring">Fair scores and useful feedback</a></li>
+<li><a href="#team-messages">Team messages and second looks</a></li>
+<li><a href="#mc">Giving and checking MC</a></li>
+<li><a href="#community-tasks">Community tasks</a></li>
+<li><a href="#quiz-raffle">Quiz and raffle</a></li>
+<li><a href="#reports">Reports and calculator</a></li>
+<li><a href="#questions">Member questions and suggested replies</a></li>
+<li><a href="#help">Handling a problem</a></li>
+</ol></nav>
+</aside>
+<main id="handbook">
+<p id="empty" hidden>No matching topic. Try a shorter button name, MC, review or feedback.</p>
+
+<section id="start"><h2>1 Start here</h2>
+<div class="unit" data-search="intro purpose moderator permission مادریتور ملی زون">
+<p>Melee Zone organizes X post submissions, assigned reviews, MC rewards, community task threads, quizzes and raffle access. Moderators also give private, evidence-based support to reviewers and, when assigned, content members.</p>
+<p>Open the existing Melee Zone panel in Discord for member actions. Select <strong>Moderator support</strong> for your weekly support tasks, or use <code>/support panel</code>. If you have bot-admin access, <code>/admin_panel</code> opens the <strong>Admin Control Center</strong>.</p>
+<p><strong>Access matters.</strong> The Meleeionaires reviewer role allows assigned reviewing. The volunteer moderator role allows your own support workload. Neither automatically grants MC-award tools or access to everyone's reports. Use only the actions your assigned role permits; ask the lead admin if access is missing.</p>
+<p>Read the confirmation after every action. A private response is visible to you in Discord, but actions can still change member balances, roles or task status. Keep personal evaluations and member reports within the authorized team.</p>
 </div>
-</nav><main><h1 id="melee-zone-moderator-manual">Melee Zone moderator manual</h1>
-<p>Version 3.0.0 | Operating reference, training and member support</p>
-<h2 id="purpose-and-authority">Purpose and authority</h2>
-<p>Melee Zone organizes a community's X submissions, assigned reviews, MC rewards, showcase, quizzes, raffle access and community task threads. Discord roles and the guild's saved configuration decide access. Moderators operate the bot through <code>/admin_panel</code>; members use the persistent user panel, <code>/guide</code> and <code>/onboard</code>.</p>
-<p>MC has three stored balances: regular, golden and assignment. Their sum is total MC. Credits are ledger-backed community rewards, not a verified measure of a person's overall contribution.</p>
-<p>An authorized bot admin is a Discord administrator, the configured admin user or a member of the configured admin role. The reviewer role is the configured <code>pro_role_id</code>, usually Meleeionaires. Its displayed name alone does not authorize reviews. The recovery owner is separately pinned by server configuration/environment or the recovery control. Being a moderator does not automatically grant restart access.</p>
-<h2 id="before-operating-a-shift">Before operating a shift</h2>
-<ol>
-<li>Open <code>/health</code>. Check gateway, database and background workers.</li>
-<li>Open <code>/setup_view</code> to confirm current roles, channels, amounts, review timing and reaction emojis.</li>
-<li>Check recent credit-log messages and <code>/stats</code> for outstanding work.</li>
-<li>Use <code>/doctor</code> in the location where a problem was reported. Permission overwrites vary by channel and thread.</li>
-<li>Keep the private recovery control and this manual available. Use member/message links and IDs when escalating an issue.</li>
-</ol>
-<p>Existing configuration is authoritative. The update does not replace your custom amounts, roles, branding or user balances with examples in this manual.</p>
-<h2 id="panel-map">Panel map</h2>
-<p>The user panel provides Dashboard, Submission, Reviews, Quiz and guide access, according to role and configuration. Dashboard includes the member's saved X handle and MC balance. Reviews shows current assignments and Ready for More.</p>
-<p>The unified admin panel groups setup, content/reviews, rewards and configuration. It also includes a role activity selector and health/recovery tools. Open a fresh <code>/admin_panel</code> after an update if an older ephemeral panel has expired. Persistent public user-panel buttons are registered again on startup.</p>
-<p>Administrative views and modals recheck authorization when used. Changing a role after opening a panel can remove access. Never distribute the Discord bot token as a moderator credential.</p>
-<h2 id="mc-awards">MC awards</h2>
-<h3 id="admin-reactions">Admin reactions</h3>
-<p>Configure up to five emojis with <code>/setup_reactions</code>. Each emoji has one regular-MC amount. Zero disables that emoji's MC payout. Keep the raffle emoji different; it follows the raffle role path before MC processing.</p>
-<p>React on the member's message with a configured emoji. This works in ordinary text channels and accessible task/review threads. A raw event enters the saved queue, so processing may take a few seconds. The bot fetches the message author, verifies the reacting admin and commits the reward. Reactions on bot messages and an admin's own message do not give reaction MC.</p>
-<p>For each message, each admin and each configured emoji can award once. Two admins using the same emoji make two legitimate awards. One admin using two different configured emojis makes two awards. Repeated gateway delivery or removing/re-adding the same reaction does not pay again. Removing a reaction does not reverse a recorded award.</p>
-<h3 id="several-recipients-in-one-command">Several recipients in one command</h3>
-<pre><code class="language-text">/give_mc amount:2 reason:Helpful participation users:@Alice @Bob mc_type:regular
-/give_mc amount:3 reason:Task completed users:111111111111111111 222222222222222222 mc_type:assignment
-</code></pre>
-<p>The amount applies to each recipient. Use up to 25 unique mentions or Discord IDs. Repeated IDs collapse into one recipient. The earlier <code>user</code> option still works and can be combined with <code>users</code>. The whole batch validates before any award: one missing member, malformed ID or bot recipient prevents the batch.</p>
-<p>A successful command reports new awards and already-recorded recipients. Retrying the same interaction is idempotent. Submitting a new slash command is a new explicit award, even with identical text. Two admins can award independently at the same time.</p>
-<p>The credit log is delivered through a separate saved outbox. A failed log delivery does not undo MC or create another award. After repeated failures, repair permissions and run <code>/doctor repair:true</code> to retry the failed notices.</p>
-<h3 id="message-shortcuts">Message shortcuts</h3>
-<p>Use the message menu, <strong>Apps &gt; Award 1 MC</strong>, for a quick regular award. Repeating that action as the same admin on the same message does not pay again. <strong>Apps &gt; Award MC</strong> opens an amount/reason form; each newly submitted form is a new award.</p>
-<h3 id="snapshot">Snapshot</h3>
-<p>Run <code>/snapshot</code> in a channel or thread, choose regular/golden/assignment, enter hours, amount and reason, then inspect the preview before confirming. Each distinct non-bot poster in the scanned messages receives the amount once for that snapshot. Confirmation and all balance updates commit together.</p>
-<p>Snapshot accepts up to 720 hours and examines at most 10,000 messages. It is an award tool with a bounded window. It does not scan every child thread when invoked in a parent channel. A separate new snapshot can reward the same person again. For large or historical role analysis, use role reports.</p>
-<h3 id="audit-and-missed-reactions">Audit and missed reactions</h3>
-<p><code>/mc_audit user:@member</code> shows the most recent 15 ledger entries, amount, type, reason and awarding actor. <code>/user_info</code> provides broader member details. Ask for the exact message URL and award time when investigating.</p>
-<p><code>/mc_reconcile hours:24</code> scans the current destination's last 200 messages within the selected 1-168 hours and queues eligible uncredited admin reactions. It is serialized, bounded to 90 seconds and has a 60-second per-location cooldown. It cannot find every reaction from a long offline period. Run it in the affected thread; the reaction ledger prevents paying already-recorded awards again.</p>
-<p>Check the balance before manually compensating. A new <code>/give_mc</code> after a successful reaction is another award. This release has no general negative-MC or automatic reversal command. Escalate an incorrect credited amount to the owner with its ledger reference; avoid editing SQLite while the bot is running.</p>
-<h2 id="community-task-threads">Community task threads</h2>
-<p>Use <code>/setup_assignment_channel</code> once for the parent channel. Open the community task tools in the admin panel or use the registered assignment commands. Create a task with a clear title, instructions, cooldown and recurring flag. Cooldown inputs include <code>0</code>, <code>1h</code>, <code>24h</code> and <code>7d</code>, bounded to seven days.</p>
-<p>Members post entries inside the task's thread. Member posts in the configured parent channel are removed if the bot has Manage Messages. A premature member post inside an active task thread is removed and a short cooldown notice is sent. The accepted-message timestamp and participant record commit together. Bots and authorized admins bypass this application rule.</p>
-<p>If a member needs a one-off retry after a moderation correction, run <code>/task_reset_cooldown user:@member</code> inside that task thread. It clears that member cooldown only and leaves MC and participation history in place.</p>
-<p>New task threads have native Discord slowmode zero. In an older bot-owned task thread, run <code>/doctor repair:true</code> to remove native slowmode while retaining the saved application cooldown. Missing Manage Threads requires a permission fix by a server administrator. A custom bot-admin role does not itself imply Discord's native bypass permissions in unrelated channels.</p>
-<p>A recurring flag records the task's intended ongoing use; it does not schedule automatic recreation, automatic payouts or automatic closure. Moderators create/close tasks explicitly. Closing archives the task workflow; past MC remains. Participant count is distinct members, not a quality score or a message total.</p>
-<h2 id="submissions-assigned-reviews-and-showcase">Submissions, assigned reviews and showcase</h2>
-<p>Members register their X handle before submitting/reviewing when registration is required. Submission accepts direct X/Twitter status URLs, including <code>/i/status/</code>. Tracking/query parameters normalize to the same status ID. A member cannot submit the same status again in another week. The registered handle helps a moderator check ownership; <code>/i/status/</code> does not identify the author. The bot does not verify X ownership or content through an X API.</p>
-<p>Weekly slots come from saved configuration. Exhausting the member's weekly submission capacity grants the configured completion reward once per week. Manual <code>/manual_assign</code> fills available assignment slots without resetting everyone's weekly submission capacity. The scheduled Saturday cycle performs the periodic reset.</p>
-<p>Reviewers open Reviews or <code>/my_reviews</code>, read the assigned post and submit a score from 1 to 10 plus written feedback. The default minimum feedback length is 30 characters, but current configuration can differ. An optional X comment link contributes to existing comment-bonus eligibility; it is a URL format check, not remote verification of the comment.</p>
-<p>Only the assigned reviewer can complete a pending/warning assignment. Duplicate submissions of the same review are rejected transactionally. No self-review is assigned. Each post's required number of reviews is saved when it is submitted. Changing the minimum later does not silently rewrite old posts.</p>
-<p>Default score rewards, unless customized:</p>
-<table>
-<thead>
-<tr>
-<th>Average score</th>
-<th style="text-align: right;">Regular MC</th>
-<th>Result</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Below 4</td>
-<td style="text-align: right;">0</td>
-<td>Rejected</td>
-</tr>
-<tr>
-<td>4 to below 6</td>
-<td style="text-align: right;">1</td>
-<td>Rejected, lower-tier reward</td>
-</tr>
-<tr>
-<td>6 to below 8</td>
-<td style="text-align: right;">3</td>
-<td>Approved</td>
-</tr>
-<tr>
-<td>8 through 10</td>
-<td style="text-align: right;">5</td>
-<td>Approved</td>
-</tr>
-</tbody>
-</table>
-<p>The showcase threshold defaults to 8 and its golden reward defaults to 3. Review-goal and comment bonuses are separate settings. A post can earn regular score MC and golden showcase MC together. Result finalization and both balances commit together. Delivery of a showcase message can still fail independently; check the ledger before giving compensation.</p>
-<h3 id="warning-and-rescue-procedure">Warning and rescue procedure</h3>
-<p>The inherited timing defaults are a five-day primary period, twelve-hour warning grace, seven-day displayed total deadline and up to three rescue assignments per reviewer per week. The panel's actual deadline and saved settings take precedence. A background check runs every 15 minutes; it is not an exact-to-the-second scheduler.</p>
-<p>After the primary period, outstanding work receives a warning. After the grace period, an eligible reviewer marked Ready for More can receive a rescue assignment. The original remains active if a valid replacement cannot be created. Replacement creation and original retirement happen together.</p>
-<p>A rescue candidate must have no unfinished primary work in the current cycle, must be marked ready, must have remaining rescue capacity and cannot be the author/original reviewer or a previous reviewer of that post. Rescue assignments have a 24-hour due date. Ready for More remains active until the rescue cap is reached or the user changes it.</p>
-<p>For inaccessible content, conflict of interest or language problems, a reviewer uses <code>/review_skip assignment_id:... reason:...</code>. This retires their active assignment, records the reason and attempts a replacement. It grants no review reward and does not guarantee an immediate replacement when reviewer capacity is unavailable.</p>
-<h2 id="leaderboard-and-legacy-exports">Leaderboard and legacy exports</h2>
-<p><code>/leaderboard</code> shows the current top MC earners. The configured persistent leaderboard updates periodically and <code>/setup_leaderboard</code> posts or refreshes it in the chosen leaderboard channel. <code>/my_mc</code> is the member balance view; <code>/user_info</code> is the admin detail view.</p>
-<p><code>/export_data</code> retains the existing CSV exports for users or posts. CSV is a legacy export; selected-role activity analysis uses the separate formatted XLSX report. Treat all user exports as moderator data and verify the chosen export type before distributing them.</p>
-<h2 id="quiz-and-raffle">Quiz and raffle</h2>
-<p>The Quiz section serves the currently active quiz loaded by an admin. Questions and options are shuffled. The quiz loader accepts the format documented in the UI; validate the JSON before loading. A member completes a particular quiz once. Result, session completion and MC commit together, so two simultaneous completions do not pay twice.</p>
-<p>Default quiz MC: 40-69 percent gives 1, 70-79 gives 2, 80-89 gives 3, 90-100 gives 5; below the configured minimum gives zero. Passing at 70 percent can grant the configured quiz role. Quiz role delivery requires Manage Roles and a bot role above that role. A role-delivery failure does not erase a completed result or its MC. Admin quiz tools provide progress/history and exports.</p>
-<p>Configure raffle access with <code>/setup_raffle_role</code>. <code>/give_raffle</code> supports multiple mentions. A configured raffle reaction also grants that role to the reacted message's author when an admin uses it. <code>/revoke_all_raffle</code> and bulk quiz-role revocation affect members' roles; inspect the target configuration before using them. These actions are not MC balance resets. Put all managed roles below the bot's top role.</p>
-<h2 id="role-analysis-and-excel">Role analysis and Excel</h2>
-<p>Open <code>/admin_panel</code>, select <strong>Role report</strong>, then select one specific role. This queues a 30-day, 20,000-message report. For a different range:</p>
-<pre><code class="language-text">/role_report role:@Meleeionaires days:90 max_messages:20000
-/role_report role:@SpecialRole days:0 max_messages:20000
-/role_report_status job_id:REPORT_ID
-/role_report_resume job_id:REPORT_ID extra_messages:20000
-/role_report_cancel job_id:REPORT_ID
-</code></pre>
-<p><code>days:0</code> requests all accessible history. Explicit windows support 1-3650 days. The message budget counts every examined message, including messages by non-target members. It bounds API work; it does not mean 20,000 messages per selected member. At most three active/paused reports per guild are queued and one worker scans serially.</p>
-<p>The roster is fetched fresh through Discord's full member inventory. It includes everyone currently holding that role, even members without a Melee Zone database record. Missing Members Intent or inventory failure stops the request instead of labeling a partial cache as a complete roster. It includes bot members for roster completeness, but bot messages are excluded from human activity counts.</p>
-<p>The report's roster and history upper cutoff are captured at request time. Its MC balances and latest locally observed activities are read when the workbook is generated. Thus it is not a single atomic historical snapshot of all these values. Request a fresh report when membership has changed.</p>
-<h3 id="meaning-of-the-fields">Meaning of the fields</h3>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Discord ID</td>
-<td>Exact text value; Excel does not round the ID</td>
-</tr>
-<tr>
-<td>Username / display name</td>
-<td>Discord identity at roster collection</td>
-</tr>
-<tr>
-<td>X handle</td>
-<td>Handle already registered with Melee Zone; blank means unknown</td>
-</tr>
-<tr>
-<td>Joined (UTC)</td>
-<td>Start of the person's current server membership</td>
-</tr>
-<tr>
-<td>Last activity</td>
-<td>Latest indexed message, observed reaction or bot action</td>
-</tr>
-<tr>
-<td>Last message</td>
-<td>Latest indexed message timestamp, including an observed later deletion</td>
-</tr>
-<tr>
-<td>Messages in window</td>
-<td>Retained indexed messages within this report's cutoff and upper bound</td>
-</tr>
-<tr>
-<td>Known messages</td>
-<td>All messages indexed for this member so far, including observed deletions</td>
-</tr>
-<tr>
-<td>Regular / golden / assignment MC</td>
-<td>Current balances read during export</td>
-</tr>
-<tr>
-<td>Total MC</td>
-<td>Excel formula summing the three balances</td>
-</tr>
-<tr>
-<td>History coverage</td>
-<td>Requested accessible history exhausted, or partial</td>
-</tr>
-</tbody>
-</table>
-<p>Recent messages contains up to five retained excerpts, capped at 350 content characters plus attachment count, with source URLs. Recent activity contains up to five live-observed reactions or bot actions. These recent records can include observations outside the requested message-count window. All dates use UTC.</p>
-<p>No observed activity means the bot has no evidence; it does not prove inactivity. Presence, reading, voice participation, historical reaction timestamps and deleted-before-observation messages are not measured. Discord IDs and handles are not automatically cross-verified with another service.</p>
-<h3 id="paused-skipped-and-complete">Paused, skipped and complete</h3>
-<p>A report pauses on its message/time budget or a transient history API failure. <code>/role_report_resume</code> keeps the saved cursor and adds allowance. <code>/role_report_status</code> attaches the most recent workbook when one has been generated. Partial reports remain usable with their visible coverage rows. A restart requeues interrupted running jobs; deliberately paused jobs wait for an admin.</p>
-<p>The scanner enumerates text channels, active threads and readable archived public/private threads. Default archived-thread enumeration is capped at 500; exceeding it is explicitly recorded. An inaccessible or deleted destination is skipped with a reason. Permissions or an enumeration cap require a new report after correction; resume continues pending destinations and does not rescan skipped ones automatically.</p>
-<p>A complete scan means all discovered accessible destinations exhausted the requested window. It cannot certify deleted or permanently inaccessible history. Even an all-history scan is therefore an accessible-history count, not a guaranteed lifetime total.</p>
-<p>Reviewer-role members are observed prospectively from V3 startup. Selecting another role adds it to observation. Exports are admin-only and ephemeral; keep the workbook in the moderator team. The bot stores the activity index locally and clears indexed message excerpts after observed deletion. Backups may retain prior data. No fixed message-index retention period or external sync is enabled in this release; the owner controls retention and backup handling.</p>
-<h2 id="onboarding-meleeionaires">Onboarding Meleeionaires</h2>
-<p>Use <code>/onboard</code> with each new reviewer. It presents six short pages: start, submit, review, deadlines/rescue, MC/tasks and common questions. Progress persists; <code>/onboard</code> resumes while <code>/guide</code> starts from the first page.</p>
-<p><strong>My next steps</strong> shows registered handle, remaining submission capacity and pending reviews with the nearest deadline. The public panel also has <strong>Guide and next steps</strong>. Newly receiving the configured reviewer role triggers one DM invitation. Existing role holders can start directly, and closed DMs leave the server-based guide available. A role name change does not break access because configuration uses IDs.</p>
-<p>For the first review, ask the member to explain the score in concrete terms. Examples: accuracy, useful detail, clarity and a suggested improvement. A short generic compliment does not give actionable feedback. The bot enforces length and score range; moderators enforce review quality.</p>
-<h2 id="troubleshooting-a-reported-issue">Troubleshooting a reported issue</h2>
-<table>
-<thead>
-<tr>
-<th>Symptom</th>
-<th>First check</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Reaction gives no MC</td>
-<td>Exact emoji, actor authorization, target author, history access</td>
-<td><code>/doctor</code>, then <code>/mc_reconcile</code> in that destination</td>
-</tr>
-<tr>
-<td>MC changed but no log</td>
-<td><code>/mc_audit</code> and credit-log permissions</td>
-<td>Repair permissions, retry notices; do not re-award</td>
-</tr>
-<tr>
-<td>Admin message deleted for cooldown</td>
-<td>Current bot admin role/user and old native slowmode</td>
-<td><code>/setup_view</code>, then <code>/doctor repair:true</code> inside task</td>
-</tr>
-<tr>
-<td>Report omits old activity</td>
-<td>Window, partial/paused state and Coverage sheet</td>
-<td>Resume or create a new all-history report after permissions fix</td>
-</tr>
-<tr>
-<td>Report says no activity</td>
-<td>Whether tracking/history includes the person</td>
-<td>Treat as unknown; inspect their source messages</td>
-</tr>
-<tr>
-<td>Reviewer sees no work</td>
-<td>Configured reviewer role, weekly cycle and current assignments</td>
-<td><code>/my_reviews</code>, <code>/manual_assign</code> if slots are available</td>
-</tr>
-<tr>
-<td>Post stalls</td>
-<td>Needed reviewers and available capacity</td>
-<td><code>/stats</code>, verify role membership and reviewer availability</td>
-</tr>
-<tr>
-<td>Role was not granted</td>
-<td>Bot role hierarchy and Manage Roles</td>
-<td>Fix hierarchy; manually grant once if authorized</td>
-</tr>
-<tr>
-<td>Slash command absent</td>
-<td>Installation readiness and guild command sync</td>
-<td>Check service logs and <code>/health</code>; owner investigates</td>
-</tr>
-<tr>
-<td>Main bot is offline</td>
-<td>Independent recovery control still available</td>
-<td>Recovery owner clicks the reset reaction once</td>
-</tr>
-<tr>
-<td>Recovery is rate limited</td>
-<td>Three restarts per 15 minutes, two-minute spacing</td>
-<td>Stop repeated pulses; inspect the cause via server logs</td>
-</tr>
-</tbody>
-</table>
-<p>For dangerous or uncertain state, use the server runbook in OPERATIONS.md. Recovery never clears balances, deletes the database, rewrites roles or rotates the token automatically.</p>
-<h2 id="member-questions-and-suggested-answers">Member questions and suggested answers</h2>
-<p><strong>Why did two admin reactions give more MC?</strong> Each authorized admin awards independently; each admin/emoji/message identity pays once.</p>
-<p><strong>Can I react to reward myself?</strong> Reaction self-awards are excluded. Ask a moderator to assess the contribution.</p>
-<p><strong>The admin removed their reaction. Why is MC unchanged?</strong> Recorded MC is a ledger entry. Removing a reaction does not reverse it.</p>
-<p><strong>I posted twice in a task and one message disappeared.</strong> The task's member cooldown permits one accepted entry per interval. Wait for the next interval.</p>
-<p><strong>Do admins have the same cooldown?</strong> Melee Zone admins bypass the application cooldown. Old native slowmode needs repair inside that task.</p>
-<p><strong>Is MC immediate?</strong> Manual awards commit before the successful response. Reaction awards wait for the saved worker and Discord message fetch. Network delays can extend that wait.</p>
-<p><strong>Why are there three balances?</strong> Regular covers ordinary rewards, golden covers showcase or explicitly golden awards, and assignment is used for explicitly assignment-type awards. Their sum is total MC.</p>
-<p><strong>My submission scored 5 and was rejected but earned MC. Is that a bug?</strong> Lower-tier MC begins at score 4; approval begins at 6. Check custom amounts in the current configuration.</p>
-<p><strong>Can I submit the same post next week?</strong> A status already submitted by you is rejected across weeks, including alternate URL forms.</p>
-<p><strong>Who checks X ownership or comment quality?</strong> The member supplies a handle/link; reviewers and moderators check content. Melee Zone does not use an X API to certify them.</p>
-<p><strong>The assigned post is gone.</strong> Use <code>/review_skip</code> with Cannot access post. Do not invent a review score.</p>
-<p><strong>Ready for More did not immediately give a rescue.</strong> A rescue must be available, your primary work must be finished and your weekly rescue limit must have space. The check runs periodically.</p>
-<p><strong>Does Known messages mean every message I ever wrote?</strong> It means messages Melee Zone has indexed. Deleted-before-observation and inaccessible history are unavailable.</p>
-<p><strong>Is the join date my very first join?</strong> It is your current membership's join date. A rejoin can replace the earlier date.</p>
-<p><strong>Can the recovery control fix every outage?</strong> It can recover the main process while the server, recovery service, token and Discord REST API remain available. A dead server or invalid token needs an owner fix.</p>
-<h2 id="escalation-record">Escalation record</h2>
-<p>Record the member ID, guild/location, message/assignment/job ID, timestamp, expected outcome, <code>/health</code> or <code>/doctor</code> result and the relevant ledger transaction. Keep tokens and full <code>.env</code> files out of Discord tickets. This makes a problem reproducible and distinguishes a financial error from a delayed notification.</p>
-<hr />
-<h1 id="melee-zone-member-and-meleeionaires-guide">Melee Zone member and Meleeionaires guide</h1>
-<h2 id="your-first-five-minutes">Your first five minutes</h2>
-<ol>
-<li>Open the server's Melee Zone panel or run <code>/onboard</code>.</li>
-<li>Register your X handle in Dashboard or <code>/register_twitter</code>. Enter the handle without <code>@</code>.</li>
-<li>Submit an original X post through Submission or <code>/submit</code> using its direct status URL.</li>
-<li>If you hold the configured Meleeionaires reviewer role, open Reviews or <code>/my_reviews</code>.</li>
-<li>Open Dashboard or <code>/my_mc</code> to see your balances. The guide's My next steps button shows the work you still have.</li>
-</ol>
-<p><code>/guide</code> opens a fresh introduction. <code>/onboard</code> resumes your saved page. You can use both even if the role-onboarding DM was blocked.</p>
-<h2 id="submitting-useful-work">Submitting useful work</h2>
-<p>Use one direct post URL per submission. Standard <code>x.com/user/status/ID</code>, <code>twitter.com/user/status/ID</code> and <code>x.com/i/status/ID</code> links are supported. Different query strings do not make the same post a new submission. A post you already submitted cannot be submitted again in another week.</p>
-<p>Only submit work you can identify and explain. An <code>/i/status/</code> link does not reveal the author in its path, so a reviewer checks ownership. Your registered handle is not independently verified through X.</p>
-<p>Your weekly capacity is shown in the panel. Completing the configured submission capacity can earn a once-per-week completion reward. A manual redistribution does not refill everyone's submission slots.</p>
-<h2 id="completing-a-review">Completing a review</h2>
-<p>Copy the assignment ID from Reviews. Open the assigned post and read it before deciding a score. Submit a score from 1 to 10 and feedback that explains the strengths, weaknesses and one useful improvement. The configured minimum feedback length applies.</p>
-<p>You can use the panel form or <code>/review</code>. An X comment URL is optional unless a moderator sets another policy; it may count toward the existing comment bonus. The bot checks the URL shape, while moderators check whether the comment is meaningful.</p>
-<p>Only your active assignment can be completed. A second click cannot create another review. Work reassigned to someone else is no longer yours. For an inaccessible post, conflict of interest or language issue, use <code>/review_skip</code>, choose a reason and return the assignment. Skipping does not earn a review reward.</p>
-<p>The deadline shown beside your assignment is authoritative. Warnings and rescues run periodically. Finish your normal work before selecting Ready for More. Rescue assignments appear only when overdue work and eligible capacity exist.</p>
-<h2 id="understanding-mc">Understanding MC</h2>
-<p>Regular, golden and assignment balances are separate; together they form your total. Your server's settings determine exact amounts. Default post-score rewards are 0 below 4, 1 from 4 to below 6, 3 from 6 to below 8 and 5 from 8 through 10. Approval begins at 6. A rejected lower-tier post can still earn regular MC.</p>
-<p>Showcase, completing the review goal, submission completion, comment bonuses, quizzes and explicit admin awards follow their own rules. Check the panel's current values instead of assuming every action gives one MC.</p>
-<p>Admin reactions award the message author. Each authorized admin can award once per message and configured emoji. Two admins can give separate awards. Removing/re-adding the same reaction does not create another payment, and removing it does not erase previously recorded MC.</p>
-<h2 id="community-tasks-and-quiz">Community tasks and quiz</h2>
-<p>Read the task instructions and post inside the task thread. The parent task channel is reserved for task organization. A member cooldown applies to accepted task entries; a second entry before the interval expires can be deleted. Wait before trying again. Admins can moderate without consuming that cooldown.</p>
-<p>Open Quiz in the panel to take the active quiz. A quiz is completed once per member. Passing can give the configured pass role when the bot has permission to manage it. MC can be recorded even if role delivery fails; report that role problem without retaking for another reward.</p>
-<p>Raffle access is a separate role. It does not by itself change your MC balance.</p>
-<h2 id="getting-help">Getting help</h2>
-<p>If MC looks wrong, refresh Dashboard first. Send a moderator your Discord ID, the message/assignment link, approximate time and what you expected. Do not repeatedly ask for a second manual award while a reaction is still queued.</p>
-<p>If Reviews is empty, there may be no available work or you may lack the configured reviewer role. If the guide says X handle is missing, register it. If a panel expires, reopen the panel section or slash command.</p>
-<p>Activity reports are moderator tools. They show evidence the bot has observed, including available messages and recent tracked actions. They cannot prove whether you read a channel, joined voice or wrote a message deleted before observation.</p>
-<hr />
-<h1 id="melee-zone-operations-and-recovery">Melee Zone operations and recovery</h1>
-<h2 id="processes-and-ownership">Processes and ownership</h2>
-<p>The installer manages two systemd units:</p>
-<ul>
-<li><code>melee-zone.service</code>: gateway connection, commands, MC, task rules, role scans and localhost health.</li>
-<li><code>melee-zone-recovery.service</code>: independent health watcher, owner pulse polling, restart control and daily SQLite backup.</li>
-</ul>
-<p>Custom main-service names produce the corresponding <code>NAME-recovery.service</code>. Both units use the preserved deployment user and an isolated release Python environment. They are separate processes. The recovery process imports neither <code>bot.py</code> nor any cog, so a main-bot import/cog failure does not require the main process to execute the rescue.</p>
-<p>The units have bounded failure restarts, private temporary directories, restrictive file creation, a 128-task process limit and memory pressure/maximum settings. MemoryHigh is 384 MiB and MemoryMax is 768 MiB per unit. These are initial ceilings, not a measured production capacity guarantee. Observe the real guild before changing them.</p>
-<p>The installer stops an old shell <code>watchdog.sh</code> running from this exact application directory. The replacement watchdog entrypoint delegates to the new daemon; its file lock permits one watcher. Remove obsolete third-party watchdog services or cron rules if they invoke a different script. Do not run competing restart loops.</p>
-<h2 id="health-definitions">Health definitions</h2>
-<p>Both HTTP services bind only to <code>127.0.0.1</code>.</p>
-<table>
-<thead>
-<tr>
-<th>Endpoint</th>
-<th style="text-align: right;">Port</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Main <code>/health</code></td>
-<td style="text-align: right;">3020</td>
-<td>Database query, event-loop responsiveness, disk headroom, required extensions and worker health</td>
-</tr>
-<tr>
-<td>Main <code>/ready</code></td>
-<td style="text-align: right;">3020</td>
-<td>All health conditions and a ready Discord gateway</td>
-</tr>
-<tr>
-<td>Recovery <code>/health</code></td>
-<td style="text-align: right;">3021</td>
-<td>Independent process responds; includes its latest recovery result</td>
-</tr>
-<tr>
-<td>Recovery <code>POST /recover</code></td>
-<td style="text-align: right;">3021</td>
-<td>Secret-authenticated, owner-identified, bounded restart request</td>
-</tr>
-</tbody>
-</table>
-<p>Ports are configurable with <code>HEALTH_PORT</code> and <code>RECOVERY_PORT</code>. A disconnected gateway is visible immediately in readiness. Short connection loss uses discord.py reconnection. The independent watcher considers a disconnect lasting at least five minutes, or three failed health polls after a two-minute startup allowance, before automatic recovery.</p>
-<p>The main process writes a private atomic heartbeat every ten seconds. Loop delay over ten seconds or an old monitor tick is unhealthy. SQLite gets a three-second check timeout. Stopped known background loops can restart up to three times per hour each. A continuously failing loop remains visible as unhealthy instead of restarting indefinitely.</p>
-<p>Invalid token and missing privileged intents are marked fatal configuration errors. Automatic recovery does not repeatedly restart such failures. The owner must correct the configuration. Missing channel permissions require a Discord permission fix; the bot cannot grant itself permission.</p>
-<h2 id="first-recovery-setup">First recovery setup</h2>
-<ol>
-<li>Confirm the independent recovery unit is running.</li>
-<li>Choose a private admin text channel where <code>@everyone</code> cannot view it.</li>
-<li>Allow the bot View Channel, Send Messages, Read Message History, Add Reactions and Manage Messages in that channel.</li>
-<li>Run <code>/recovery_setup channel:#private-admin-control</code> as the configured recovery owner.</li>
-<li>Keep the returned message link available. The control is a saved message with a reset reaction.</li>
-</ol>
-<p>The recovery owner can be pinned with <code>--owner-id</code> during installation or <code>RESCUE_OWNER_ID</code> in the deployment environment. Otherwise the configured bot admin user is used until setup pins the owner; if no configured admin user exists, the guild owner is the fallback. Only that ID's pulse is accepted. Multiple guild administrators do not automatically obtain this authority. This deployment uses one saved recovery control/owner; setting it up again replaces that control configuration.</p>
-<h2 id="owner-recovery-when-the-main-bot-is-stopped">Owner recovery when the main bot is stopped</h2>
-<p>Click the reset reaction on the saved control message once. The separate daemon polls Discord REST every 15 seconds with the existing bot token, removes the owner's reaction to acknowledge the pulse, performs a read-only SQLite integrity check and requests a fixed systemd restart. It posts the accepted/failure result in the control channel when Discord is reachable.</p>
-<p>When the main process is alive, the <strong>Recover main bot</strong> button under <code>/health</code> calls the same local recovery service. Its request is acknowledged before the main process is stopped. Non-owners are rejected. There is no arbitrary shell command field.</p>
-<p>The recovery daemon permits at most three attempts in 15 minutes, with at least two minutes between attempts. The budget is saved across daemon restarts. A second concurrent request is rejected. Discord 429 responses defer pulse polling using <code>retry_after</code>.</p>
-<p>The pulse requires the host, recovery daemon, valid token, control message and Discord REST API to remain available. It cannot work through a powered-off host, total network failure, removed control message or revoked token. Server-console access is the independent fallback for those conditions.</p>
-<h2 id="server-console-fallback">Server-console fallback</h2>
-<p>Use an authorized SSH/server console. Commands below assume the default service names.</p>
-<pre><code class="language-bash">sudo systemctl status melee-zone.service melee-zone-recovery.service --no-pager
-sudo journalctl -u melee-zone.service -n 100 --no-pager
-sudo journalctl -u melee-zone-recovery.service -n 100 --no-pager
-curl --fail --max-time 5 http://127.0.0.1:3020/ready
-curl --fail --max-time 5 http://127.0.0.1:3021/health
-</code></pre>
-<p>For a deliberate owner restart after inspecting the cause:</p>
-<pre><code class="language-bash">sudo systemctl reset-failed melee-zone.service
-sudo systemctl restart melee-zone.service
-</code></pre>
-<p>For the independent route without Discord UI, use <code>scripts/control.py recover</code> from the application environment. It reads the local private secret and configured owner and calls the recovery endpoint without exposing the secret in output. <code>scripts/control.py status</code> prints both endpoints.</p>
-<pre><code class="language-bash">cd /root/Melee-Zone
-/path/to/the-installed-release/venv/bin/python scripts/control.py status
-/path/to/the-installed-release/venv/bin/python scripts/control.py recover
-</code></pre>
-<p>Find the installed interpreter in <code>systemctl show melee-zone.service -p ExecStart</code>. Do not source <code>.env</code> as a shell script or paste its contents into a ticket.</p>
-<h2 id="safe-repair-policy">Safe repair policy</h2>
-<p><code>/doctor repair:true</code> retries exhausted reaction/notification jobs, starts stopped supported loops within their budget and clears native slowmode in the current bot-owned task thread when authorized and permitted. It does not reset balances, delete queues, change saved application cooldowns or overwrite role settings.</p>
-<p>Reaction retries revalidate the admin, destination and current configured emoji. Permission/REST errors stay pending with exponential backoff; after eight failed attempts they are marked failed for manual repair. Non-eligible targets are completed without an award. Notification retries never rerun an MC transaction. Credit-log delivery is at least once: if a process dies after Discord accepts the log message but before the outbox acknowledgement, a duplicate log message is possible. Financial reward identities still prevent duplicate credit.</p>
-<p>Long role scans use channel checkpoints and bounded pages. A running report interrupted by shutdown requeues at startup. A deliberate pause retains its cursor until resumed. Financial and report transactions are short; Discord REST calls do not run inside the MC write lock.</p>
-<h2 id="backup-upgrade-and-rollback">Backup, upgrade and rollback</h2>
-<p>The recovery daemon creates one consistent SQLite backup per day, including committed WAL state, and keeps seven daily files. A healthy initialized database and a functioning recovery service are required. <code>/backup</code> creates an additional owner-only local backup while the main bot is running. The command reports the filename; it does not publish the database into Discord.</p>
-<p>Before an update, the installer records:</p>
-<ul>
-<li><code>before.db</code>: consistent backup refreshed after the services stop.</li>
-<li><code>migration-test.db</code>: independent migration check copy.</li>
-<li><code>previous-code.tar.gz</code>: private previous application archive.</li>
-<li>Original systemd unit files, when present.</li>
-<li><code>rollback.json</code>: application/service/database locations for code rollback.</li>
-</ul>
-<p>Upgrade backups are under <code>APP/backups/upgrade-TIMESTAMP</code>. They are private and can contain the old <code>.env</code> inside the previous-code archive. Never attach them to a public issue or commit them. The distributed release contains no production configuration or member database.</p>
-<p>To restore previous code while preserving current MC and <code>.env</code>:</p>
-<pre><code class="language-bash">sudo python3 /root/Melee-Zone/scripts/rollback.py /root/Melee-Zone/backups/upgrade-TIMESTAMP
-</code></pre>
-<p>The additive V3 tables can remain in the database used by V2. Code rollback restores the previous unit and does not rewind legitimate MC awarded after the update. Automatic install rollback also preserves the current database after any attempted service start. A failure before any service start can restore the final pre-upgrade DB because no new gateway awards could have been processed.</p>
-<p>Database restoration is a different operation. Stop both services, preserve the damaged/current files, choose a verified backup and use SQLite's backup API to restore consistently. Remove stale WAL/SHM only while all connections are closed and after saving evidence. A DB restore rewinds data after that backup; require a specific owner decision and reconcile subsequent awards. Recovery does not automatically erase or replace a corrupt database.</p>
-<p>The installer restores main/recovery unit files it manages. Custom systemd drop-ins and unrelated watchers are not automatically rewritten. Inspect them if they override paths, ports, users, environment or restart policy. An optional non-root recovery sudo rule permits only reset-failed/restart of the selected main unit.</p>
-<h2 id="operational-fault-table">Operational fault table</h2>
-<table>
-<thead>
-<tr>
-<th>Fault</th>
-<th>Automated behavior</th>
-<th>Owner action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Short gateway/network loss</td>
-<td>Gateway reconnect, durable queues preserved</td>
-<td>Observe readiness; avoid repeated resets</td>
-</tr>
-<tr>
-<td>Stopped supported worker</td>
-<td>Up to three loop starts per hour</td>
-<td>Inspect traceback if it stops again</td>
-</tr>
-<tr>
-<td>Main process dead/stalled</td>
-<td>Bounded independent restart</td>
-<td>Use pulse or console and inspect logs</td>
-</tr>
-<tr>
-<td>Discord REST rate limit</td>
-<td>Library handling; pulse honors retry-after</td>
-<td>Wait; reduce repeated manual scans</td>
-</tr>
-<tr>
-<td>Invalid token/intents</td>
-<td>Fatal marker, no automatic restart storm</td>
-<td>Correct token/Developer Portal settings</td>
-</tr>
-<tr>
-<td>SQLite corruption</td>
-<td>Diagnostics reject recovery restart</td>
-<td>Preserve evidence and restore verified DB</td>
-</tr>
-<tr>
-<td>Disk nearly full</td>
-<td>Unhealthy below 100 MiB</td>
-<td>Free safe logs/old exports and inspect backups</td>
-</tr>
-<tr>
-<td>Missing history permission</td>
-<td>Reaction retries/report coverage</td>
-<td>Fix overwrites and run doctor/new report</td>
-</tr>
-<tr>
-<td>Missing role hierarchy</td>
-<td>Role action error</td>
-<td>Move bot role above managed role</td>
-</tr>
-<tr>
-<td>Whole host unreachable</td>
-<td>No local service can execute</td>
-<td>Hosting console or provider recovery</td>
-</tr>
-</tbody>
-</table>
-<h2 id="retention-and-capacity">Retention and capacity</h2>
-<p>Operation audit keeps roughly the newest 10,000 rows. Completed reaction inbox rows age out after seven days; permanent award keys remain. Completed notification rows age out after 30 days. Recent non-message activity is limited to 50 events per tracked member, with five exported. Message IDs/timestamps/excerpts remain indexed until the owner implements a retention policy; observed deletion clears message excerpts.</p>
-<p>Report workbooks and manual/upgrade backups are not automatically removed by the seven-day daily-backup policy. The owner should periodically archive or remove old exports and upgrade bundles after verification. Track runtime disk use and queue state. This release serializes heavy history scans and bounds financial fetch batches, but it has not been benchmarked against your real guild's peak traffic.</p>
-<hr />
-<h1 id="root-causes-and-corrections">Root causes and corrections</h1>
-<h2 id="mc-reactions-in-community-task-threads">MC reactions in community task threads</h2>
-<p>The old reaction listener resolved its destination using <code>guild.get_channel(channel_id)</code>. Discord threads have a separate cache lookup. Consequently, a thread reaction returned no destination and the listener stopped before fetching the message or crediting its author. A slash command or snapshot worked in the same thread because it already held the interaction's channel object. The successful command did not prove that the reaction listener could resolve that thread.</p>
-<p>V3 resolves destinations with <code>get_channel_or_thread</code>, the bot cache and a REST fallback. It checks that the returned destination belongs to the intended guild and that message history is readable. The raw reaction listener persists the event. A bounded worker rechecks admin eligibility, fetches the target message and commits the reward.</p>
-<p>A reaction's financial identity is message ID, awarding admin ID and normalized emoji ID. Custom emoji names can change without changing identity. Unicode variation selectors do not create extra identities. Existing recorded awards are backfilled into this identity table during migration. Two authorized admins produce two awards. Repeated delivery or removing and re-adding the same admin reaction produces one award.</p>
-<p>MC is credited to the message author. Bot messages and self-awards through reactions are excluded. Only configured MC emojis have an MC value. The raffle emoji takes its separate role-granting path; use a different emoji for raffle access and MC.</p>
-<h2 id="cooldown-also-restricting-admins">Cooldown also restricting admins</h2>
-<p>The old task message handler checked the task's saved cooldown before exempting bot administrators. A configured bot-admin role can be a normal Discord role and does not automatically bypass Discord's own native thread slowmode.</p>
-<p>V3 bypasses the application cooldown for the configured admin user, configured admin role and Discord administrators. Bots are ignored. Member acceptance reserves the cooldown and participation record in one transaction, so simultaneous messages cannot both consume the same available slot. New task threads have native slowmode set to zero; Melee Zone enforces the longer application cooldown. Run <code>/doctor repair:true</code> inside an existing bot-owned task thread to clear an old native slowmode value when Manage Threads is available.</p>
-<p>Discord split the former slowmode permission into <code>BYPASS_SLOWMODE</code> in February 2026. Relying on unrelated permissions is therefore insufficient. This release avoids that dependency for its own task threads by using the application cooldown.</p>
-<h2 id="what-the-720-hour-limit-meant">What the 720-hour limit meant</h2>
-<p>720 hours was the bot's Snapshot form validation, not a blanket Discord history retention limit. Snapshot still retains that bounded award workflow. Role reports use paginated history and can request <code>days:0</code> for all accessible retained history, or a longer explicit window. Scans remain bounded and resumable.</p>
-<p>The bot cannot reconstruct messages deleted before observation, channels it cannot view, private threads it cannot access, old member joins superseded by rejoining, or historical reaction timestamps. No user token or undocumented search endpoint is used. Excel makes these coverage limits visible.</p>
-<h2 id="additional-integrity-corrections">Additional integrity corrections</h2>
-<ul>
-<li>The MC ledger entry and balance increment are committed together.</li>
-<li>Multi-recipient awards and Snapshot confirmation are all-or-nothing transactions.</li>
-<li>Score/showcase MC and post finalization now commit together. A restart cannot mark a post finalized before paying its reward.</li>
-<li>Quiz result, completed session and quiz MC now commit together. Concurrent completions cannot pay twice.</li>
-<li>Assignment creation enforces post slots and weekly primary capacity inside the transaction.</li>
-<li>Rescue handoff creates its replacement and retires its original together.</li>
-<li>Administrative views and modals recheck access when used.</li>
-<li>Health reports real database, gateway, extension, worker and event-loop state; it no longer returns unconditional OK.</li>
-</ul>
-<h2 id="primary-documentation">Primary documentation</h2>
-<ul>
-<li><a href="https://docs.discord.com/developers/topics/threads">Discord threads</a></li>
-<li><a href="https://docs.discord.com/developers/resources/message#get-channel-messages">Get channel messages</a></li>
-<li><a href="https://docs.discord.com/developers/change-log">Discord changelog</a></li>
-<li><a href="https://discordpy.readthedocs.io/en/stable/api.html">discord.py API</a></li>
-</ul>
-<p>Local regression tests reproduce the original thread-cache failure. Live guild permissions and gateway delivery still require installation acceptance checks.</p>
-<hr />
-<h1 id="registered-command-reference">Registered command reference</h1>
-<p>Generated from the V3 offline command tree. All commands are server-only. Current saved configuration determines exact roles, amounts and timing.</p>
-<p>48 application commands: 46 slash commands and 2 message context actions.</p>
-<h2 id="admin_guide">/admin_guide</h2>
-<p>Open the moderator reference</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="admin_panel">/admin_panel</h2>
-<p>Open the admin panel (admin only)</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<h2 id="message-action-award-1-mc">Message action: Award 1 MC</h2>
-<p>Message context action</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="message-action-award-mc">Message action: Award MC</h2>
-<p>Message context action</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="backup">/backup</h2>
-<p>Create a consistent database backup (recovery owner)</p>
-<p><strong>Access:</strong> Recovery owner and admin.</p>
-<h2 id="doctor">/doctor</h2>
-<p>Diagnose permissions, reactions, tasks and runtime (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>repair</td>
-<td>No</td>
-<td>False</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<h2 id="export_data">/export_data</h2>
-<p>Export data as CSV (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>data_type</td>
-<td>No</td>
-<td>posts</td>
-<td>… Choices: posts, users, reviews</td>
-</tr>
-</tbody>
-</table>
-<h2 id="give_mc">/give_mc</h2>
-<p>Manually award MC (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>amount</td>
-<td>Yes</td>
-<td></td>
-<td>Amount per member Range: 0.1 to 1000.0.</td>
-</tr>
-<tr>
-<td>reason</td>
-<td>Yes</td>
-<td></td>
-<td>Reason</td>
-</tr>
-<tr>
-<td>user</td>
-<td>No</td>
-<td>None</td>
-<td>One member</td>
-</tr>
-<tr>
-<td>users</td>
-<td>No</td>
-<td>None</td>
-<td>Multiple member mentions or IDs, up to 25</td>
-</tr>
-<tr>
-<td>mc_type</td>
-<td>No</td>
-<td>regular</td>
-<td>Credit type Choices: regular, golden, assignment</td>
-</tr>
-</tbody>
-</table>
-<h2 id="give_raffle">/give_raffle</h2>
-<p>Give raffle role to one or more users (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>users</td>
-<td>Yes</td>
-<td></td>
-<td>Mention users separated by spaces</td>
-</tr>
-</tbody>
-</table>
-<h2 id="guide">/guide</h2>
-<p>Open the user guide and answers</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<h2 id="health">/health</h2>
-<p>Open bot health and recovery tools (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="leaderboard">/leaderboard</h2>
-<p>Top MC earners</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<h2 id="manual_assign">/manual_assign</h2>
-<p>Trigger assignment cycle now (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="mc_audit">/mc_audit</h2>
-<p>View recent MC transactions for a member (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>user</td>
-<td>Yes</td>
-<td></td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<h2 id="mc_reconcile">/mc_reconcile</h2>
-<p>Recover uncredited admin reactions in this channel or thread (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>hours</td>
-<td>No</td>
-<td>24</td>
-<td>… Range: 1 to 168.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="my_mc">/my_mc</h2>
-<p>Check your Melee Credit balance</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<h2 id="my_reviews">/my_reviews</h2>
-<p>View posts assigned to you for review</p>
-<p><strong>Access:</strong> Reviewer role.</p>
-<h2 id="my_submits">/my_submits</h2>
-<p>View your submissions this week</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<h2 id="onboard">/onboard</h2>
-<p>Continue your Melee Zone introduction</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<h2 id="panel">/panel</h2>
-<p>Post the user panel in this channel</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<h2 id="quick_start">/quick_start</h2>
-<p>Open the first steps for your role</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<h2 id="recovery_setup">/recovery_setup</h2>
-<p>Create an owner-only recovery pulse in a private control channel</p>
-<p><strong>Access:</strong> Recovery owner and admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>channel</td>
-<td>Yes</td>
-<td></td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<h2 id="register_twitter">/register_twitter</h2>
-<p>Register or update your X/Twitter handle</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>twitter_username</td>
-<td>Yes</td>
-<td></td>
-<td>Your X/Twitter username (without @)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="review">/review</h2>
-<p>Submit your review for an assigned post</p>
-<p><strong>Access:</strong> Reviewer role.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>assignment_id</td>
-<td>Yes</td>
-<td></td>
-<td>First 8 chars of assignment ID</td>
-</tr>
-<tr>
-<td>score</td>
-<td>Yes</td>
-<td></td>
-<td>Score 1-10 Range: 1 to 10.</td>
-</tr>
-<tr>
-<td>summary</td>
-<td>Yes</td>
-<td></td>
-<td>Written feedback</td>
-</tr>
-<tr>
-<td>comment</td>
-<td>No</td>
-<td>None</td>
-<td>Your X comment URL (optional)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="review_skip">/review_skip</h2>
-<p>Return an assigned post you cannot review</p>
-<p><strong>Access:</strong> Reviewer role.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>assignment_id</td>
-<td>Yes</td>
-<td></td>
-<td>…</td>
-</tr>
-<tr>
-<td>reason</td>
-<td>Yes</td>
-<td></td>
-<td>… Choices: Cannot access post, Conflict of interest, Language issue, Other</td>
-</tr>
-</tbody>
-</table>
-<h2 id="revoke_all_raffle">/revoke_all_raffle</h2>
-<p>Remove raffle role from ALL users (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="role_report">/role_report</h2>
-<p>Export role members, activity and MC to Excel (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>role</td>
-<td>Yes</td>
-<td></td>
-<td>…</td>
-</tr>
-<tr>
-<td>days</td>
-<td>No</td>
-<td>30</td>
-<td>0 scans all accessible history. Default: 30 days. Range: 0 to 3650.</td>
-</tr>
-<tr>
-<td>max_messages</td>
-<td>No</td>
-<td>20000</td>
-<td>Total messages scanned across channels. Resume adds another budget. Range: 100 to 200000.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="role_report_cancel">/role_report_cancel</h2>
-<p>Stop a report and retain the collected history (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>job_id</td>
-<td>Yes</td>
-<td></td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<h2 id="role_report_resume">/role_report_resume</h2>
-<p>Continue a paused report from its saved cursor (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>job_id</td>
-<td>Yes</td>
-<td></td>
-<td>…</td>
-</tr>
-<tr>
-<td>extra_messages</td>
-<td>No</td>
-<td>20000</td>
-<td>… Range: 100 to 200000.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="role_report_status">/role_report_status</h2>
-<p>Get report progress and its current Excel file (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>job_id</td>
-<td>Yes</td>
-<td></td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup">/setup</h2>
-<p>Open the unified setup center</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="setup_assignment_channel">/setup_assignment_channel</h2>
-<p>Set the assignments channel where threads are posted (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>channel</td>
-<td>Yes</td>
-<td></td>
-<td>The assignments channel</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup_channels">/setup_channels</h2>
-<p>Configure all channels</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>bot_content_channel</td>
-<td>Yes</td>
-<td></td>
-<td>Main bot channel</td>
-</tr>
-<tr>
-<td>showcase_channel</td>
-<td>Yes</td>
-<td></td>
-<td>Featured posts channel</td>
-</tr>
-<tr>
-<td>mention_role</td>
-<td>Yes</td>
-<td></td>
-<td>Role pinged for showcase</td>
-</tr>
-<tr>
-<td>leaderboard_channel</td>
-<td>Yes</td>
-<td></td>
-<td>Leaderboard channel (auto-updates)</td>
-</tr>
-<tr>
-<td>log_channel</td>
-<td>No</td>
-<td>None</td>
-<td>System log (optional)</td>
-</tr>
-<tr>
-<td>credit_log_channel</td>
-<td>No</td>
-<td>None</td>
-<td>Credit log (optional)</td>
-</tr>
-<tr>
-<td>review_channel</td>
-<td>No</td>
-<td>None</td>
-<td>Review notifications fallback (optional)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup_leaderboard">/setup_leaderboard</h2>
-<p>Post or refresh leaderboard (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="setup_quiz_role">/setup_quiz_role</h2>
-<p>Set the quiz pass role - given to users who score 70%+ (admin only)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>role</td>
-<td>Yes</td>
-<td></td>
-<td>Role assigned to users who score 70%+</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup_raffle_reaction">/setup_raffle_reaction</h2>
-<p>Set the emoji that grants the raffle role</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>emoji</td>
-<td>Yes</td>
-<td></td>
-<td>Emoji that grants raffle role when admin reacts</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup_raffle_role">/setup_raffle_role</h2>
-<p>Set the raffle access role (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>role</td>
-<td>Yes</td>
-<td></td>
-<td>Role granted for raffle access</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup_reactions">/setup_reactions</h2>
-<p>Set MC reaction emojis (up to 5)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>emoji_1</td>
-<td>Yes</td>
-<td></td>
-<td>Emoji 1</td>
-</tr>
-<tr>
-<td>mc_1</td>
-<td>Yes</td>
-<td></td>
-<td>MC for emoji 1</td>
-</tr>
-<tr>
-<td>emoji_2</td>
-<td>Yes</td>
-<td></td>
-<td>Emoji 2</td>
-</tr>
-<tr>
-<td>mc_2</td>
-<td>Yes</td>
-<td></td>
-<td>MC for emoji 2</td>
-</tr>
-<tr>
-<td>emoji_3</td>
-<td>Yes</td>
-<td></td>
-<td>Emoji 3</td>
-</tr>
-<tr>
-<td>mc_3</td>
-<td>Yes</td>
-<td></td>
-<td>MC for emoji 3</td>
-</tr>
-<tr>
-<td>emoji_4</td>
-<td>No</td>
-<td>None</td>
-<td>Emoji 4 (optional)</td>
-</tr>
-<tr>
-<td>mc_4</td>
-<td>No</td>
-<td>None</td>
-<td>MC for emoji 4</td>
-</tr>
-<tr>
-<td>emoji_5</td>
-<td>No</td>
-<td>None</td>
-<td>Emoji 5 (optional)</td>
-</tr>
-<tr>
-<td>mc_5</td>
-<td>No</td>
-<td>None</td>
-<td>MC for emoji 5</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup_reset">/setup_reset</h2>
-<p>Reset all configuration (keeps user data)</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="setup_roles">/setup_roles</h2>
-<p>Configure roles</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pro_role</td>
-<td>Yes</td>
-<td></td>
-<td>Reviewer role</td>
-</tr>
-<tr>
-<td>basic_role</td>
-<td>No</td>
-<td>None</td>
-<td>Basic role (optional)</td>
-</tr>
-<tr>
-<td>admin_role</td>
-<td>No</td>
-<td>None</td>
-<td>Admin role (optional)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup_settings">/setup_settings</h2>
-<p>Tune all numeric parameters</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>max_submits</td>
-<td>No</td>
-<td>None</td>
-<td>Max posts/user/week Range: 1 to 20.</td>
-</tr>
-<tr>
-<td>max_reviews</td>
-<td>No</td>
-<td>None</td>
-<td>Max reviews/reviewer/week Range: 1 to 20.</td>
-</tr>
-<tr>
-<td>review_window_days</td>
-<td>No</td>
-<td>None</td>
-<td>Days to complete a review Range: 1 to 14.</td>
-</tr>
-<tr>
-<td>reminder_hours</td>
-<td>No</td>
-<td>None</td>
-<td>Hours before reminder Range: 12 to 168.</td>
-</tr>
-<tr>
-<td>min_reviews</td>
-<td>No</td>
-<td>None</td>
-<td>Min reviews needed per post Range: 1 to 10.</td>
-</tr>
-<tr>
-<td>showcase_threshold</td>
-<td>No</td>
-<td>None</td>
-<td>Min avg score for showcase Range: 5.0 to 10.0.</td>
-</tr>
-<tr>
-<td>require_twitter_id</td>
-<td>No</td>
-<td>None</td>
-<td>Require X handle</td>
-</tr>
-</tbody>
-</table>
-<h2 id="setup_start">/setup_start</h2>
-<p>Start configuration wizard</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="setup_view">/setup_view</h2>
-<p>View current configuration</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="snapshot_1">/snapshot</h2>
-<p>Award MC to everyone who posted in a channel/thread within a time window (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>channel</td>
-<td>No</td>
-<td>None</td>
-<td>Channel or thread to scan (default: current)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="stats">/stats</h2>
-<p>Weekly statistics (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<h2 id="submit">/submit</h2>
-<p>Submit a post for review</p>
-<p><strong>Access:</strong> Member or panel-specific role.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>link</td>
-<td>Yes</td>
-<td></td>
-<td>Twitter/X post URL</td>
-</tr>
-</tbody>
-</table>
-<h2 id="task_reset_cooldown">/task_reset_cooldown</h2>
-<p>Reset one member cooldown in the current community task (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>user</td>
-<td>Yes</td>
-<td></td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<h2 id="user_info">/user_info</h2>
-<p>View user details (admin)</p>
-<p><strong>Access:</strong> Admin.</p>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Required</th>
-<th>Default</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>user</td>
-<td>Yes</td>
-<td></td>
-<td>User to inspect</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h1 id="live-discord-acceptance-after-installation">Live Discord acceptance after installation</h1>
-<p>These checks have not been performed by the release's local simulation. Use test members and an agreed small MC amount. Record before/after balances so intentional test credits are accounted for.</p>
-<ol>
-<li>Confirm both systemd services and <code>/ready</code>. Open a fresh admin and user panel. Confirm guild slash commands and both message context actions are visible.</li>
-<li>Verify old member balances, X handles, roles/channels and pending posts before new awards. Do not run setup_reset during an upgrade.</li>
-<li>In a normal text channel, an authorized admin reacts to a test member message. Confirm one configured regular award and one ledger identity.</li>
-<li>Repeat inside a new community task thread and an older accessible thread. Repeat after the thread leaves the cache or is archived and readable. Confirm no channel-lookup failure.</li>
-<li>Two different admins react simultaneously to one member's message. Confirm two awards. Remove/re-add the same admin reaction and confirm zero additional credit.</li>
-<li>Try a non-admin, bot-author message and reaction self-award. Confirm zero reaction MC.</li>
-<li>Use <code>/give_mc</code> for two test members. Confirm equal entered amounts for both. Include a malformed/non-member ID and confirm nobody is paid from that rejected batch.</li>
-<li>Repeat the quick 1-MC message context action as the same admin. Confirm it pays once. Verify a separate custom award is recorded as a new deliberate operation.</li>
-<li>Create a task with a short member cooldown. Confirm a member's second message is removed and two rapid messages cannot both be accepted. Confirm the configured bot-admin-role member and bot messages are exempt.</li>
-<li>In an old task thread with native slowmode, run <code>/doctor repair:true</code>. Confirm native delay zero and the application cooldown preserved.</li>
-<li>Request a selected small-role report over 90 days. Verify the roster against Discord, current join timestamps, registered handles and three MC balances. Check all four sheets and real links.</li>
-<li>Use a small message budget to force pause. Resume; confirm the saved cursor continues, no duplicated indexed IDs and coverage remains explicit. Verify a denied-history channel is skipped with a reason.</li>
-<li>Give the reviewer role to a test member. Verify its one-time invitation or server-guide fallback, /onboard progress and My next steps.</li>
-<li>Complete one assigned review and one test quiz. Confirm each result/reward is recorded once, roles/hierarchy behave as configured and showcase publication is visible when eligible.</li>
-<li>Temporarily deny credit-log send permission for a test award. Confirm MC survives the failed notice. Restore permission and use safe repair. A repeated log after an interruption must not be treated as a new MC payment.</li>
-<li>Set up the owner recovery control. During a controlled maintenance window, stop only the main unit. Click the owner's pulse and confirm the separate unit restarts it. Verify a non-owner pulse cannot trigger restart.</li>
-<li>Create a backup, verify it with SQLite quick_check and review the private upgrade backup path. Rehearse code rollback on a staging copy before a production rollback is needed.</li>
-</ol>
-<p>A denied gateway intent, wrong bot token, missing permissions or whole-host outage requires fixing that environment. Local tests cannot certify them.</p>
-<hr />
-<h1 id="rollout-and-roadmap">Rollout and roadmap</h1>
-<h2 id="included-in-v3">Included in V3</h2>
-<p>Thread-aware MC reactions, normalized emoji identity, durable reaction/notice queues, transactional awards, multiple recipients, message shortcuts, reconciliation/audit, cooldown admin exemption, selected-role Excel reports, history checkpoints, reviewer onboarding, real health, bounded loop repair, independent owner pulse, backups, checked installer and rollback are implemented.</p>
-<h2 id="first-deployment">First deployment</h2>
-<p>Before update, retain a verified private backup and note the service/application path. Install the checked release and complete LIVE_ACCEPTANCE.md with test accounts. Publish the user panel guide and share the moderator reference. Start reports with a small specific role rather than the whole server.</p>
-<p>During the first day, inspect reaction delay, permission errors, queue retries, role roster completeness and recovery logs. During the first week, compare a sample of Excel counts with Discord evidence, confirm daily backups, check disk use and ensure stopped workers are not repeatedly restarting. Confirm admins understand that a new manual award or snapshot is a new reward.</p>
-<h2 id="next-operational-improvements">Next operational improvements</h2>
-<p>These are future work, not hidden features in this release:</p>
-<ol>
-<li>Add an owner-controlled retention/deletion policy for activity excerpts, old exports and upgrade backups after the community chooses a retention period.</li>
-<li>Benchmark the actual guild's peak event volume and report size, then adjust worker batches, archive enumeration and memory ceilings from measured data.</li>
-<li>Add explicit, audited MC reversal/adjustment approval with linked original transactions if the moderation policy requires it.</li>
-<li>Add saved role-report presets and optional schedules only after desired roles, intervals and destinations are agreed. V3 has manual resumable reports.</li>
-<li>Add durable rich showcase/role delivery jobs if these notifications require the same retry guarantees as credit logs. V3 already commits their MC independently.</li>
-<li>Consider a separate infrastructure recovery channel or hosting-provider monitor for whole-host outages. A process on the same host cannot repair its own lost host.</li>
-<li>Audit long-term weekly cycle boundaries and refresh member onboarding copy from real support questions. Keep reward-policy changes separate from maintenance releases.</li>
-</ol>
-<h2 id="maintaining-the-reference">Maintaining the reference</h2>
-<p>Update COMMANDS.md when registered commands change. Update MODERATOR_MANUAL.md and USER_GUIDE.md whenever access, amounts, limits or workflow behavior changes. Regenerate the standalone manual from the same source. Preserve a release manifest and test report for every shipped version; never put production databases or tokens in the repository.</p></main></div><footer>Melee Zone 3.0.0 | Use the current server configuration for amounts, roles and deadlines. Print this page to retain an offline reference.</footer></body></html>
+<div class="unit" data-search="where panel map navigation مسیر پنل">
+<h3>Choose the right destination</h3>
+<table><thead><tr><th>If you need to</th><th>Go here</th></tr></thead><tbody>
+<tr><td>Help a new Meleeionaires reviewer</td><td>Member panel → <strong>Guide and next steps</strong> → <strong>My next steps</strong></td></tr>
+<tr><td>Find an assigned X post</td><td>Member panel → <strong>Reviews</strong> → <strong>Assignments</strong></td></tr>
+<tr><td>Check someone's review quality</td><td>Member panel → <strong>Moderator support</strong> → <strong>Choose a person to support</strong></td></tr>
+<tr><td>Read or reply to team feedback</td><td>Member panel → <strong>Team messages</strong></td></tr>
+<tr><td>Award MC to specific people</td><td><code>/admin_panel</code> → <strong>Rewards</strong> → <strong>Award MC</strong></td></tr>
+<tr><td>Run a community task or check quiz progress</td><td><code>/admin_panel</code> → <strong>Content</strong> → <strong>Community Tasks</strong> or <strong>Quiz</strong></td></tr>
+<tr><td>Download participation reports</td><td><code>/admin_panel</code> → <strong>Review support and analytics</strong></td></tr>
+<tr><td>Check activity for one role</td><td><code>/admin_panel</code> → <strong>Role report</strong> → select the role</td></tr>
+</tbody></table>
+<p>Bot-admin access is required for the admin-panel destinations. An expired private view can be reopened from its parent panel or slash command.</p>
+</div></section>
+
+<section id="member-panel"><h2>2 Member panel buttons</h2>
+<div class="unit" data-search="dashboard register balance rank performance نام هندل ثبت">
+<h3>Dashboard</h3>
+<p><strong>Dashboard</strong> shows the saved X handle and total MC. Its buttons open these member views.</p>
+<table><thead><tr><th>Button</th><th>What it does</th></tr></thead><tbody>
+<tr><td>Register X Handle</td><td>Registers an X username without the @ sign. Changes are limited; the Dashboard shows the remaining allowance.</td></tr>
+<tr><td>My Balance</td><td>Shows Regular, Golden and Assignment MC, the total, and recent reward entries.</td></tr>
+<tr><td>My Rank</td><td>Shows all-time, weekly and monthly MC rank.</td></tr>
+<tr><td>My Performance</td><td>Shows recent MC earnings, total submitted posts and recorded Golden credit awards. This is a summary, not a complete quality assessment.</td></tr>
+</tbody></table>
+</div>
+<div class="unit" data-search="submission reviews faq guide about quiz moderator support main buttons دکمه">
+<h3>Main panel destinations</h3>
+<table><thead><tr><th>Button</th><th>What it opens</th></tr></thead><tbody>
+<tr><td>Submission</td><td>Remaining weekly submission slots, <strong>Submit Post</strong> and <strong>My Last Submissions</strong>.</td></tr>
+<tr><td>Reviews</td><td>Reviewer progress, pending work, <strong>Assignments</strong>, <strong>Submit a Review</strong>, <strong>Ready for More</strong> and <strong>Team messages</strong>.</td></tr>
+<tr><td>FAQ &amp; Guide</td><td>Quick instructions and the server's current reward and review rules.</td></tr>
+<tr><td>About</td><td>The community's introduction to Melee Zone.</td></tr>
+<tr><td>Quiz</td><td>The active quiz or a message saying no quiz is active.</td></tr>
+<tr><td>Guide and next steps</td><td>A short guided introduction with <strong>Previous</strong>, <strong>Next</strong> and <strong>My next steps</strong>.</td></tr>
+<tr><td>Team messages</td><td>Your private team-feedback inbox.</td></tr>
+<tr><td>Moderator support</td><td>Your own weekly volunteer workload, if you have moderator access.</td></tr>
+</tbody></table>
+<p><strong>My next steps</strong> checks the member's registered handle, remaining submission slots and pending reviews with the nearest deadline. <code>/guide</code> starts the introduction; <code>/onboard</code> continues it.</p>
+</div></section>
+
+<section id="submissions"><h2>3 Submissions and results</h2>
+<div class="unit" data-search="submit post x twitter link duplicate ownership سابمیت ارسال">
+<h3>Help a member submit a post</h3>
+<ol><li>Ask them to register their X handle in <strong>Dashboard → Register X Handle</strong> if required.</li><li>Open <strong>Submission → Submit Post</strong>.</li><li>Paste a direct X or Twitter post URL into <strong>X / Twitter Post URL</strong>.</li><li>Read the confirmation, then use <strong>My Last Submissions</strong> to check the saved post.</li></ol>
+<p>A profile link is not a post link. The same member cannot submit the same post again in another week; different tracking parameters do not make it a new post. Reviewers check that the post belongs to the submitter. A valid link or registered handle is not proof of ownership.</p>
+<p>Submission slots reset with the Saturday cycle. Use the remaining-slots count in the panel instead of promising a fixed number. Filling the full weekly submission allowance can earn the displayed completion reward once for that week.</p>
+</div>
+<div class="unit" data-search="pending assigned approved rejected showcase status result score">
+<h3>Read submission results</h3>
+<p><strong>My Last Submissions</strong> shows saved post links, status, available scores and recorded post MC. <strong>Previous</strong> and <strong>Next</strong> browse the recent history.</p>
+<table><thead><tr><th>Status</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Pending</td><td>The submission is waiting for review work to progress.</td></tr>
+<tr><td>Assigned</td><td>Review assignments have been created; the result is not final yet.</td></tr>
+<tr><td>Approved</td><td>The required review result meets the approval threshold.</td></tr>
+<tr><td>Rejected</td><td>The final score does not meet approval. A lower reward band can still apply.</td></tr>
+</tbody></table>
+<p>Post MC depends on the final average and the server's reward rules. Showcase requires its own threshold and can add Golden MC. A private moderator support score is a different measure and does not determine the post's reward.</p>
+</div></section>
+
+<section id="reviews"><h2>4 Assigned reviews</h2>
+<div class="unit" data-search="assignment review submit feedback comment id ریویو اساینمنت">
+<h3>Complete an assigned review</h3>
+<ol><li>Open <strong>Reviews → Assignments</strong>. Read the post link, assignment ID and remaining time.</li><li>Open the post and check its content, context and author.</li><li>Choose <strong>Submit a Review</strong>.</li><li>Enter the assignment ID shown in your list, an integer score from 1 to 10, and specific written feedback. Add an X comment URL only if you actually left that comment.</li><li>Submit once and read the saved confirmation and progress count.</li></ol>
+<table><thead><tr><th>Form field</th><th>What to enter</th></tr></thead><tbody>
+<tr><td>Assignment ID (first 8 chars)</td><td>The short ID from your own active assignment list.</td></tr>
+<tr><td>Score (1-10)</td><td>An integer supported by what you read.</td></tr>
+<tr><td>Your Written Feedback</td><td>Explain what works and what could improve. Meet the form's length requirement.</td></tr>
+<tr><td>X comment URL (optional bonus)</td><td>A direct link to your relevant X comment. Leave blank if there is none.</td></tr>
+</tbody></table>
+<p>Only the assigned reviewer can complete that active assignment. Already completed or reassigned work cannot be submitted again. The Reviews panel shows the current review goal and its MC reward. Comment-bonus eligibility is separate and requires the relevant comment links on the week's reviews.</p>
+</div>
+<div class="unit" data-search="deadline warning rescue ready for more skip cannot access conflict language">
+<h3>Deadlines and work you cannot review</h3>
+<p>Use the assignment's displayed deadline. A warning indicates unfinished work; after the applicable grace period, the bot may offer replacement work to an eligible reviewer. If your assignment has been reassigned, stop using the old ID and refresh your list.</p>
+<p><strong>Ready for More</strong> joins the extra-review queue. It does not create a post on demand or guarantee immediate work. Finish your primary reviews first. Extra rescue work has its own deadline and capacity limit.</p>
+<p>If a post is inaccessible, creates a conflict of interest, or cannot be reviewed fairly because of language, use <code>/review_skip</code> with its <code>assignment_id</code> and a reason. The bot returns that assignment and tries to find a replacement. Skipping is not a completed review and does not earn its completion credit.</p>
+<p><strong>For authorized admins:</strong> <code>/admin_panel → Content → Distribute Reviews</code> fills available review assignments. It does not create volunteer moderator support tasks or replenish member submission slots. Use <strong>Overview</strong> or <code>/stats</code> to check current work before intervening.</p>
+</div></section>
+
+<section id="moderator-support"><h2>5 Weekly moderator support</h2>
+<div class="unit" data-search="mod review volunteer allocation workload capacity random pause skip ماد ریویو">
+<h3>Choose a workload you can manage</h3>
+<p>Open <strong>Moderator support</strong> in the main panel or use <code>/support panel</code>. Support tasks are people whose recorded work from the previous week you will review. These are separate from the X posts assigned to you as a reviewer.</p>
+<table><thead><tr><th>Control</th><th>What it does</th></tr></thead><tbody>
+<tr><td>I am available</td><td>Opts you into reviewer support at the standard capacity, normally up to ten people per week. It does not opt you into a separate member workload.</td></tr>
+<tr><td>Choose a person to support</td><td>Opens one pending person's saved evidence and shows whether the task concerns a reviewer or a content member.</td></tr>
+<tr><td>Next tasks</td><td>Cycles through pending task pages, with up to ten people per page.</td></tr>
+<tr><td>Pause my workload</td><td>Stops your availability without penalty and passes unfinished tasks to volunteers with room. Completed work stays recorded.</td></tr>
+<tr><td>Team messages</td><td>Opens your private inbox, including replies to your feedback.</td></tr>
+</tbody></table>
+<p>To choose your own capacity, use <code>/support availability</code>. For example, <code>reviewers:5 members:0 available:true</code> volunteers for up to five reviewer tasks and no member tasks. Reviewer and member capacities are separate: ten reviewer slots plus five member slots can mean fifteen people.</p>
+<p>Weekly allocation balances available capacity and varies who supports each person. No one evaluates themselves. With fifty reviewers and five available moderators offering ten slots each, there is capacity for ten people per moderator. If there is less capacity, some work waits; the bot does not force extra tasks onto a full moderator.</p>
+</div>
+<div class="unit" data-search="evidence samples score feedback skip without penalty reassignment">
+<h3>Finish or skip a support task</h3>
+<ol><li>Select the person and confirm the task's scope.</li><li>Read the saved samples and follow their links when accessible. The samples describe recorded work, not the person's entire contribution.</li><li>Choose <strong>Score and feedback</strong>.</li><li>Enter an integer score from 1 to 10, the full IDs of the samples you actually checked, and one evidenced strength plus one helpful suggestion.</li><li>Submit once. The feedback is saved in the recipient's <strong>Team messages</strong>; an optional DM may notify them.</li></ol>
+<p>The form fields are <strong>Score 1-10. Blank only if no samples exist</strong>, <strong>Full IDs of samples you checked</strong>, and <strong>One strength and one helpful suggestion</strong>. Sample IDs are pre-filled; remove any you did not check. Feedback accepts 30 to 1,500 characters.</p>
+<p>Use <strong>Skip without penalty</strong> for a conflict, unavailable evidence or lack of time. The task moves to another eligible volunteer only if they have capacity; otherwise it waits. The skip makes no MC deduction and records no negative score. A task that is no longer assigned to you must not be scored from an old panel.</p>
+<p><strong>No samples:</strong> leave the score blank and write a friendly check-in, or skip. Missing evidence is not zero. A rating based on fewer samples is marked as limited evidence. Support scores do not automatically change MC or roles.</p>
+</div></section>
+
+<section id="scoring"><h2>6 Fair scores and useful feedback</h2>
+<div class="unit" data-search="rubric grading rating fair score 1 10 reviewer member انصاف نمره">
+<p>Score the sampled work, not the person's personality, friendship with the team, popularity or message volume. A post score assesses content. A moderator support score assesses the quality of the sampled reviews or member work. Keep those measures separate.</p>
+<table><thead><tr><th>Score</th><th>Reviewer support</th><th>Member content support</th></tr></thead><tbody>
+<tr><td>1 to 2</td><td>Substantially inaccurate, unrelated or harmful feedback, with concrete evidence.</td><td>The sampled content substantially misses its purpose.</td></tr>
+<tr><td>3 to 4</td><td>Mostly generic feedback with little usable explanation.</td><td>An idea is present, but relevance, clarity or support needs work.</td></tr>
+<tr><td>5 to 6</td><td>A usable review with some explanation and a clear next improvement.</td><td>Relevant, useful content with identifiable improvements.</td></tr>
+<tr><td>7 to 8</td><td>Specific, balanced and actionable feedback supported by the samples.</td><td>Clear, useful content with adequate supporting detail.</td></tr>
+<tr><td>9 to 10</td><td>Consistently excellent sampled reviews with precise, helpful examples.</td><td>Excellent sampled work with clear value and strong supporting examples.</td></tr>
+</tbody></table>
+<p>Different scores between reviewers are a reason to examine the explanation, not proof of misconduct. Repeated phrases are also a prompt to check context. Do not demand more output simply to justify a higher score.</p>
+</div>
+<div class="unit" data-search="friendly suggestion strength feedback example pressure">
+<h3>Write feedback the person can use</h3>
+<p>Name one thing that worked and one small, achievable improvement. Tie both to a checked sample. Avoid labels such as lazy, bad reviewer or not committed.</p>
+<p><strong>Example:</strong> “Your review of sample [ID] clearly explains why the example supports the post. In the next review, add one specific suggestion the author could act on. That would make your feedback easier to use.”</p>
+<p><strong>When evidence is missing:</strong> “I could not find recorded samples for this period, so I have left the score blank. If you would like help finding your assignments or using the panel, reply here.”</p>
+<p>Keep feedback private. Do not post scores in public channels, compare people publicly or use support scores as an informal punishment. If you cannot judge the work fairly, skip and tell the lead admin when context is needed.</p>
+</div></section>
+
+<section id="team-messages"><h2>7 Team messages and second looks</h2>
+<div class="unit" data-search="inbox private dm reply feedback notification پیام تیم خصوصی">
+<h3>Read and reply to feedback</h3>
+<p>Open <strong>Team messages</strong> from the main panel, Reviews or Moderator support. <code>/team_messages</code> is a shortcut. This is a private inbox for saved team feedback and replies, not a public channel or a general direct-message composer.</p>
+<table><thead><tr><th>Control</th><th>What it does</th></tr></thead><tbody>
+<tr><td>Choose a message to reply or request a second look</td><td>Selects a message and displays its full text. Select the intended message before replying.</td></tr>
+<tr><td>Reply</td><td>Opens <strong>Your message</strong> and sends a saved private reply to that message's sender.</td></tr>
+<tr><td>Request a second look</td><td>Requests an independent review of the selected evaluation. Explain what evidence or context should be reconsidered.</td></tr>
+<tr><td>Older messages</td><td>Moves to an older page of messages.</td></tr>
+<tr><td>Newest messages</td><td>Returns to the newest inbox page.</td></tr>
+<tr><td>Keep feedback in the panel only</td><td>Turns off DM notifications. Saved messages remain available in the panel.</td></tr>
+</tbody></table>
+<p>Closed DMs do not remove saved feedback. To switch DM notifications back on, use <code>/team_messages dm_notifications:true</code>. Replies are limited to five per person per hour; if the limit is reached, wait before replying again.</p>
+<p>Ordinary users cannot browse someone else's inbox. Authorized admins can review evaluations and reports. Do not describe this as absolute secrecy or include sensitive personal information.</p>
+</div>
+<div class="unit" data-search="appeal independent second look correction disagreement">
+<h3>Handle a request for a second look</h3>
+<p>The recipient selects the evaluation message, chooses <strong>Request a second look</strong> and provides a short reason. One request is allowed per evaluation. A second look applies to moderator support feedback; it is not a button for changing a post's final review result.</p>
+<p>An authorized admin other than the evaluating moderator checks the evidence and records the explanation. The original rating stays in the record; any corrected score is recorded separately. The explanation appears in the member's private inbox. Neither a request nor its resolution changes MC automatically.</p>
+<p>As the evaluating moderator, provide the checked samples and relevant context. Do not resolve your own evaluation's second-look request. Keep the exchange factual and give the member room to explain.</p>
+</div></section>
+
+<section id="mc"><h2>8 Giving and checking MC</h2>
+<div class="unit" data-search="award mc give_mc multiple recipients regular golden assignment balance ام سی">
+<h3>Award MC to one or several members</h3>
+<p>These actions require bot-admin access. Open <code>/admin_panel → Rewards → Award MC</code>. Enter member mentions or Discord IDs, the amount, <code>regular</code>, <code>golden</code> or <code>assignment</code>, and a clear reason.</p>
+<p>The amount is <strong>per recipient</strong>. Entering two members and 2 MC gives each member 2 MC, not 1 MC each. Up to 25 unique recipients are accepted. Repeated IDs count once. If a recipient is invalid, missing or a bot, the whole batch is rejected; correct the list before trying again.</p>
+<p><code>/give_mc</code> is the command equivalent. Select <code>amount</code>, <code>reason</code>, <code>users</code> or <code>user</code>, and <code>mc_type</code>. Multiple authorized admins can award at the same time. Agree who is awarding which contribution to avoid unintended extra credit.</p>
+<p>A newly submitted award command or amount form is a new award, even if its text matches an earlier one. Before retrying after an uncertain result, check the recipient's balance or <code>/mc_audit user:@member</code>. A missing public notice does not by itself mean the reward failed.</p>
+</div>
+<div class="unit" data-search="reaction emoji remove readd thread apps context menu shortcut ری اکشن ترید">
+<h3>Use a reaction or message shortcut</h3>
+<p>Use the team's approved reward emoji on a member's message in a readable channel or task thread. The reacting person must have bot-admin authority. Ordinary member reactions do not award MC. Bot messages and your own messages do not receive reaction MC from you.</p>
+<p>Each admin can award once per message per approved emoji. Removing and adding the same reaction again does not pay again. Removing a reaction does not take the recorded MC back. Another authorized admin's reaction is a separate award; a different reward emoji can also be a separate award.</p>
+<table><thead><tr><th>Message menu action</th><th>What it does</th></tr></thead><tbody>
+<tr><td>Apps → Award 1 MC</td><td>Gives 1 Regular MC to the message author. The same admin repeating this shortcut on the same message does not award it again.</td></tr>
+<tr><td>Apps → Award MC</td><td>Opens an amount-and-reason form for Regular MC to the message author. Each newly submitted form can give another award.</td></tr>
+</tbody></table>
+<p>Open the message's context menu to find Apps. If an expected award is missing, collect the exact message link and ask an authorized admin to check the record before manually compensating.</p>
+</div>
+<div class="unit" data-search="snapshot confirm cancel hours channel batch">
+<h3>Reward participants with Snapshot</h3>
+<ol><li>Go to the exact channel or thread you intend to reward and run <code>/snapshot</code>. The <strong>Snapshot</strong> button under Rewards points you to this command.</li><li>Choose <strong>Regular</strong>, <strong>Golden</strong> or <strong>Assignment</strong>.</li><li>Enter the look-back hours, MC amount per user and reason.</li><li>Check the destination and preview. Choose <strong>Confirm &amp; Award</strong> only when the recipients and amount are correct; otherwise choose <strong>Cancel</strong>.</li></ol>
+<p>Each distinct non-bot poster found in that scan receives the amount once. Snapshot is limited to 720 hours and up to 10,000 messages. Running it in a parent channel does not automatically include all child threads. A separate new snapshot can reward the same people again.</p>
+<p><strong>Check balances:</strong> members use <strong>Dashboard → My Balance</strong> or <code>/my_mc</code>. Authorized admins use <code>/mc_audit</code> for recent reward entries or <code>/user_info</code> for member details. Regular, Golden and Assignment balances add up to total MC.</p>
+</div></section>
+
+<section id="community-tasks"><h2>9 Community tasks</h2>
+<div class="unit" data-search="task create close active past cooldown recurring اساینمنت کول داون">
+<p>Community tasks are thread-based activities. They are separate from assigned X reviews and weekly moderator support. Members post entries <strong>inside the task's thread</strong>, not in the parent task channel.</p>
+<p>Authorized admins open <code>/admin_panel → Content → Community Tasks</code>.</p>
+<table><thead><tr><th>Button</th><th>What it does</th></tr></thead><tbody>
+<tr><td>New Task</td><td>Opens a task form with title, instructions, post cooldown and recurring yes/no. Saving creates the task thread.</td></tr>
+<tr><td>Active Tasks</td><td>Lists active task IDs, thread references, distinct participant counts and cooldowns.</td></tr>
+<tr><td>Past Tasks</td><td>Shows closed task records and participation counts.</td></tr>
+<tr><td>Close Task</td><td>Closes the selected task ID. The form also asks whether to archive and lock its thread.</td></tr>
+</tbody></table>
+<p>Check the exact task ID before closing it. Closing does not erase earlier MC. Participant count means distinct members, not the total number of messages or a quality score.</p>
+<p>The thread's stated cooldown controls how often a member can post. Early posts can be removed with a cooldown notice. The bot's task cooldown exempts authorized bot admins; a moderator without that authority is still treated as a member. A separate Discord restriction can still block posting.</p>
+<p>For an approved correction, an authorized admin can run <code>/task_reset_cooldown user:@member</code> in that task thread. This clears only that member's task cooldown, not their MC or participation record. A recurring label does not automatically create new tasks, pay rewards or close the thread.</p>
+</div></section>
+
+<section id="quiz-raffle"><h2>10 Quiz and raffle</h2>
+<div class="unit" data-search="quiz start history question answer timeout pass role">
+<h3>Help a member take the quiz</h3>
+<p>Open <strong>Quiz → Start Quiz</strong>. Read each question and choose the appropriate answer button. The result shows the score and recorded MC. <strong>My Quiz History</strong> shows completed results. A completed quiz cannot be repeated for another reward.</p>
+<p>MC depends on the displayed score bands. A passing score of 70 percent can grant the quiz role. If an old question stops responding, reopen the Quiz panel and report the stalled attempt rather than promising a fresh rewarded attempt.</p>
+<p>Authorized admins open <code>/admin_panel → Content → Quiz</code> for <strong>Active Quiz Info</strong>, <strong>User Progress</strong> and <strong>Export Quiz CSV</strong>. <strong>Load Quiz (JSON)</strong> publishes prepared quiz material; use it only when the lead has approved that material. <strong>Revoke All Quiz Roles</strong> removes the quiz role from its holders; it does not undo quiz results or MC. Obtain lead approval before a bulk removal.</p>
+</div>
+<div class="unit" data-search="raffle holders give role revoke giveaway قرعه">
+<h3>Manage raffle access</h3>
+<p>Authorized admins open <code>/admin_panel → Rewards → Raffle</code>.</p>
+<table><thead><tr><th>Button</th><th>What it does</th></tr></thead><tbody>
+<tr><td>Give to User</td><td>Accepts space-separated member mentions or IDs and grants the raffle-access role.</td></tr>
+<tr><td>Current Holders</td><td>Shows who holds the raffle-access role.</td></tr>
+<tr><td>Revoke All</td><td>Removes the raffle-access role from all its holders. Use only for an approved bulk removal.</td></tr>
+</tbody></table>
+<p>The team's designated raffle reaction can also grant raffle access to the message author when used by an authorized admin. Raffle access is a role, not MC or a guarantee of winning.</p>
+</div></section>
+
+<section id="reports"><h2>11 Reports and calculator</h2>
+<div class="unit" data-search="analytics fortnightly 14 day excel csv calculator report گزارش اکسل">
+<h3>Participation and review support reports</h3>
+<p>These tools require bot-admin access. Open <code>/admin_panel → Review support and analytics</code>. Individual volunteer moderators cannot download everyone's records.</p>
+<table><thead><tr><th>Operating button</th><th>What it does</th></tr></thead><tbody>
+<tr><td>14-day report</td><td>Requests a private participation report for the preceding 14 days. Wait for completion before downloading.</td></tr>
+<tr><td>Latest Excel and CSV</td><td>Downloads the latest completed report, or shows its current progress.</td></tr>
+<tr><td>Calculator</td><td>Shows approximate workload and reward estimates from a completed report. It does not apply changes.</td></tr>
+<tr><td>Refresh weekly allocation</td><td>Refreshes eligible people and available volunteer work for the current support cycle. It is not a reroll for a preferred score.</td></tr>
+<tr><td>Second-look requests</td><td>Lists open evaluation-review requests for an independent authorized admin.</td></tr>
+<tr><td>Pause support</td><td>Pauses support scheduling and task scoring for everyone. Saved inboxes, reports, MC and the main review cycle remain. Use only with lead approval.</td></tr>
+</tbody></table>
+<p><code>/review_analytics days:14</code> requests a report; <code>/review_analytics_status</code> checks or downloads one, using its returned job ID if needed. Automatic fortnightly reports remain private until an authorized admin requests the files.</p>
+<p>The Excel workbook separates <strong>Overview</strong>, <strong>Calculator</strong>, <strong>Members</strong>, <strong>Reviewers</strong>, <strong>Moderators</strong>, <strong>Posts</strong>, <strong>Reviews</strong> and <strong>Oversight</strong>. CSV contains person-level participation data; detailed post and review records are in Excel. Import Discord IDs as Text when opening CSV in Excel.</p>
+<p>Amber Calculator cells are editable estimates. Changing the workbook does not change the bot. Treat suggestions as approximations for the lead to consider, not mandatory quotas or promised MC. Actual awards and estimated rewards are separate.</p>
+<p>For second-look resolution, a different authorized admin uses <code>/support resolve</code> with the request ID, an evidence-based explanation and, if appropriate, a revised score. The original evaluating moderator cannot resolve their own request.</p>
+</div>
+<div class="unit" data-search="role report last activity message count joined handle id history coverage">
+<h3>Activity for one selected role</h3>
+<p>Open <code>/admin_panel → Role report</code> and select the intended role. The standard report examines a bounded 30-day window. It includes Discord IDs, usernames and display names, registered X handles when known, join dates, observed activity, recent message excerpts and MC balances.</p>
+<p>Use <code>/role_report_status</code> with the report ID to check progress or download its workbook. An authorized admin can use <code>/role_report</code> for a different window, or <code>/role_report_resume</code> if a scan is paused and more history is needed.</p>
+<p>Read <strong>History coverage</strong> before drawing conclusions. Counts cover accessible, recorded messages, not guaranteed lifetime activity. A blank handle means unknown; missing activity does not prove the person was inactive. Reading, voice participation, deleted content and inaccessible history may not be represented. Do not use message counts alone to judge review quality.</p>
+</div></section>
+
+<section id="questions"><h2>12 Member questions and suggested replies</h2>
+<div class="unit qa" data-search="new onboarding confused start">
+<h3>Where do I start</h3><p class="reply">“Open the Melee Zone panel and choose Guide and next steps. In Dashboard, register your X handle. My next steps will show what you can do next and any pending reviews.”</p></div>
+<div class="unit qa" data-search="cannot submit register x full capacity">
+<h3>Why can I not submit a post</h3><p class="reply">“Check Dashboard for your registered X handle, then open Submission to see your remaining weekly slots. Use a direct post link. Send me the exact error if the handle and slots look correct.”</p></div>
+<div class="unit qa" data-search="duplicate url tracking same week">
+<h3>Why is my link marked as a duplicate</h3><p class="reply">“The same post can only be submitted once by you, even in another week. Changing the link's tracking text does not make it a new post. Check My Last Submissions for the earlier entry.”</p></div>
+<div class="unit qa" data-search="reviews role meleeionaires denied access">
+<h3>Why can I not open Reviews</h3><p class="reply">“Reviews is for the assigned reviewer role, usually Meleeionaires, and may require a registered X handle. Reopen the panel after checking those. I will ask the lead to check your access if it still refuses.”</p></div>
+<div class="unit qa" data-search="no assignments missing waiting ready for more">
+<h3>Why do I have no assignments</h3><p class="reply">“Open a fresh Reviews panel and check Assignments. Work depends on available posts and reviewer capacity. Ready for More joins the extra-review queue after your primary work is finished; it does not guarantee an immediate assignment.”</p></div>
+<div class="unit qa" data-search="cannot access deleted conflict language skip">
+<h3>The assigned post is deleted or I cannot review it fairly</h3><p class="reply">“Use /review_skip with that assignment ID and the closest reason. You do not need to invent a score for content you cannot assess. Send the assignment ID if the skip itself fails.”</p></div>
+<div class="unit qa" data-search="review saved lost id already completed">
+<h3>Did my review save</h3><p class="reply">“Check the saved confirmation and reopen Reviews to see your completed count. If the old assignment says completed or no longer active, do not send a duplicate. Give me the assignment ID and approximate submission time to check.”</p></div>
+<div class="unit qa" data-search="mc reward every review comment bonus">
+<h3>Why did one completed review not give me MC</h3><p class="reply">“The Reviews panel shows the weekly review goal and its reward. A single review does not necessarily earn that goal reward. Comment and post rewards follow separate rules. Let's check your progress and balance first.”</p></div>
+<div class="unit qa" data-search="reaction no mc delayed thread">
+<h3>An admin reacted but my MC did not change</h3><p class="reply">“Open Dashboard → My Balance and allow a short processing delay. Send the message link, emoji and approximate time if it is still missing. We will check the reward record before adding anything manually.”</p></div>
+<div class="unit qa" data-search="remove reaction mc reverse double admins">
+<h3>Does removing a reaction remove MC</h3><p class="reply">“No. A recorded reaction award stays. Re-adding the same emoji as the same admin does not pay again. Another authorized admin's reaction can be a separate award.”</p></div>
+<div class="unit qa" data-search="cooldown deleted message task parent">
+<h3>Why was my community task message removed</h3><p class="reply">“Post inside the task's thread, not its parent channel, and follow the cooldown shown in the task. If an accepted entry needs a correction, send the thread and message details so an authorized admin can check it.”</p></div>
+<div class="unit qa" data-search="mod score mc quality post rating pressure">
+<h3>Does my moderator support score reduce my MC</h3><p class="reply">“No. This is private feedback on the sampled work. It does not automatically change MC or roles. It is separate from the score reviewers give a submitted post.”</p></div>
+<div class="unit qa" data-search="feedback disagree appeal second look">
+<h3>I disagree with the feedback or score</h3><p class="reply">“Open Team messages, select that evaluation and choose Request a second look. Explain which sample or context should be reconsidered. A different authorized admin will review the request.”</p></div>
+<div class="unit qa" data-search="dm missing private panel notification">
+<h3>I did not receive a feedback DM</h3><p class="reply">“Open Team messages in the server panel. Feedback is saved there even if DMs are closed or notifications are off. You can reply from the inbox.”</p></div>
+<div class="unit qa" data-search="who see privacy confidential inbox">
+<h3>Who can see my team feedback</h3><p class="reply">“Your inbox is not visible to other ordinary members. Authorized admins can review evaluations and reports. Please keep sensitive personal information out of feedback messages.”</p></div>
+<div class="unit qa" data-search="quiz retake role missing pass">
+<h3>I passed the quiz but did not receive the role</h3><p class="reply">“Check Quiz or My Quiz History for the saved result and MC. Send the quiz title and result to a moderator. A missing role needs an access check; you do not need to repeat a completed quiz.”</p></div>
+<div class="unit qa" data-search="no samples blank zero inactive">
+<h3>Why is my support score blank</h3><p class="reply">“There were no recorded samples for that check-in, so the score was left blank. Blank is not zero and does not prove inactivity. You can reply with context or ask for help finding your saved work.”</p></div>
+<div class="unit qa" data-search="moderator busy volunteer skip pause penalty">
+<h3>I am a moderator and cannot finish this week's support work</h3><p class="reply">“Use Pause my workload, or Skip without penalty for an individual task. Unfinished work moves only to volunteers with room. There is no MC penalty for taking a pause.”</p></div>
+<div class="unit qa" data-search="calculator report automatic settings award">
+<h3>Does the calculator change rewards automatically</h3><p class="reply">“No. It shows estimates for the authorized team to consider. Editing its Excel inputs does not apply anything to the bot or create MC awards.”</p></div>
+</section>
+
+<section id="help"><h2>13 Handling a problem</h2>
+<div class="unit" data-search="troubleshooting expired failed button error issue help تروبلشوت">
+<h3>Check the result before repeating the action</h3>
+<ol><li>Reopen the relevant view from the main panel or its slash command. Old private buttons can expire.</li><li>Check the member's role, X-handle requirement and current assignment or task status.</li><li>For MC, check My Balance or ask an authorized admin to use <code>/mc_audit</code>. Do not assume a missing notice means a missing reward.</li><li>If the issue continues, send the lead admin a short, private incident report. Do not promise a reward, role, deadline change or immediate resolution you cannot confirm.</li></ol>
+<p>For a missed reaction, an authorized admin can use <code>/mc_reconcile</code> in the affected channel or thread to recover eligible uncredited reactions. It checks a limited recent window, so it is not a complete historical audit. Already recorded reaction awards are not paid again by that check.</p>
+<p>If a quiz role, task thread or report is unavailable, ask the lead to check access. Do not delete a quiz result, recreate an activity or send duplicate awards as a workaround.</p>
+</div>
+<div class="unit" data-search="escalate incident evidence id screenshot report error">
+<h3>Send a useful incident report</h3>
+<p>Include the member's Discord ID, exact channel or thread and message link, assignment or report ID when relevant, approximate time with timezone, button or command used, exact error, and the result you expected. Add a screenshot if it helps, without exposing another member's private feedback.</p>
+<p><strong>Suggested reply:</strong> “I have recorded the details and passed them to the lead admin. Please avoid repeating the award or submission while we check whether it already saved.”</p>
+</div>
+<a class="back-top" href="#top">Back to top</a>
+</section>
+</main></div>
+<footer>Melee Zone moderator handbook · Discord panels and member support</footer>
+<script>
+(() => {
+  const input = document.getElementById('search');
+  const status = document.getElementById('search-status');
+  const empty = document.getElementById('empty');
+  const sections = [...document.querySelectorAll('main section')];
+  const entries = sections.flatMap(section => [...section.querySelectorAll('.unit')].map(node => ({node,section,text:node.textContent,aliases:node.dataset.search || '',title:section.querySelector('h2').textContent})));
+  const normalize = s => s.normalize('NFKC').toLocaleLowerCase().replace(/[\u200c\u200d]/g,' ').replace(/[\/_-]+/g,' ').replace(/\s+/g,' ').trim();
+  entries.forEach(e => e.index = normalize(e.title + ' ' + e.text + ' ' + e.aliases));
+  function removeMarks() {
+    document.querySelectorAll('main mark').forEach(mark => mark.replaceWith(document.createTextNode(mark.textContent)));
+    entries.forEach(e => e.node.normalize());
+  }
+  function highlight(node, terms) {
+    const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    const literal = terms.filter(t => t.length > 1).sort((a,b) => b.length - a.length).map(t => t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+    if (!literal.length) return;
+    const expression = new RegExp(literal.join('|'), 'giu');
+    for (const textNode of nodes) {
+      const value = textNode.nodeValue;
+      const matches = [...value.matchAll(expression)];
+      if (!matches.length) continue;
+      const fragment = document.createDocumentFragment(); let start = 0;
+      for (const match of matches) {
+        fragment.append(document.createTextNode(value.slice(start,match.index)));
+        const mark = document.createElement('mark'); mark.textContent = match[0]; fragment.append(mark);
+        start = match.index + match[0].length;
+      }
+      fragment.append(document.createTextNode(value.slice(start))); textNode.replaceWith(fragment);
+    }
+  }
+  function filter() {
+    removeMarks();
+    const terms = [...new Set(normalize(input.value).split(' ').filter(Boolean))];
+    let found = 0;
+    entries.forEach(e => {const match = terms.every(t => e.index.includes(t)); e.node.hidden = !match; if(match){found++; if(terms.length)highlight(e.node,terms);}});
+    sections.forEach(s => {s.hidden = !entries.some(e => e.section === s && !e.node.hidden);});
+    document.querySelectorAll('nav a').forEach(a => {const section = document.getElementById(a.hash.slice(1));a.parentElement.hidden = section.hidden;});
+    empty.hidden = found > 0;
+    status.textContent = terms.length ? `${found} matching topic${found === 1 ? '' : 's'} in ${sections.filter(s => !s.hidden).length} section${sections.filter(s => !s.hidden).length === 1 ? '' : 's'}.` : 'Showing the complete handbook.';
+  }
+  input.addEventListener('input',filter);
+  document.getElementById('clear').addEventListener('click',() => {input.value='';filter();input.focus();});
+  document.getElementById('print').addEventListener('click',() => window.print());
+  document.addEventListener('keydown',event => {if((event.ctrlKey || event.metaKey) && event.key.toLowerCase()==='k'){event.preventDefault();input.focus();input.select();}if(event.key==='Escape' && document.activeElement===input){input.value='';filter();}});
+  window.addEventListener('beforeprint',() => {removeMarks();sections.forEach(s=>s.hidden=false);entries.forEach(e=>e.node.hidden=false);empty.hidden=true;});
+  window.addEventListener('afterprint',filter);
+  filter();
+})();
+</script>
+</body>
+</html>

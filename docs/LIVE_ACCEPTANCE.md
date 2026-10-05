@@ -21,3 +21,15 @@ These checks have not been performed by the release's local simulation. Use test
 17. Create a backup, verify it with SQLite quick_check and review the private upgrade backup path. Rehearse code rollback on a staging copy before a production rollback is needed.
 
 A denied gateway intent, wrong bot token, missing permissions or whole-host outage requires fixing that environment. Local tests cannot certify them.
+
+## V3.1 support acceptance
+
+Configure small reviewer, volunteer-moderator and optional content roles. Verify a complete roster, opt-in distribution, spare-capacity skip and full-capacity queue. Test a 1–10 score with checked samples and a blank-score no-evidence check-in. Check full feedback, private replies, DM opt-out/closed DMs and an independent second look. Remove a moderator role and confirm stale task buttons fail. Generate a 14-day XLSX/CSV, compare identities/source counts/MC, and change Calculator inputs without any Discord setting or balance changing. Confirm all three support loops in `/health`. Do not run a large allocation merely to manufacture production test traffic.
+
+## Configuration approval acceptance
+
+Use a small test role without Discord Administrator. The original primary admin selects it as Moderator panel role in `/admin_access`. Give it to a test moderator, and confirm admin-panel access, private XLSX/CSV download, free-form task creation/closure, per-task cooldown editing, rapid moderator posts, member cooldown reset, and MC tools. Native Administrator alone must still lack primary approval access.
+
+Submit a small reward/rule change from the test moderator. Confirm pending status and unchanged active values. The primary admin inspects the complete before/after JSON and approves or rejects. Check the request history and exactly one audit decision. Submit another proposal, modify that same field as a primary admin, then try approval: it must become stale, not overwrite the current field. Remove the moderator or primary role while its panel is open; old forms/buttons must fail. Add/remove a named primary administrator and select/clear a primary role; the original primary administrator/server owner must retain access. Do not test destructive configuration reset on the production guild.
+
+These live checks need the actual server permissions and a controlled test account. They have not been run by the offline release test suite.

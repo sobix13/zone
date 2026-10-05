@@ -4,6 +4,10 @@
 
 Thread-aware MC reactions, normalized emoji identity, durable reaction/notice queues, transactional awards, multiple recipients, message shortcuts, reconciliation/audit, cooldown admin exemption, selected-role Excel reports, history checkpoints, reviewer onboarding, real health, bounded loop repair, independent owner pulse, backups, checked installer and rollback are implemented.
 
+## Included in V3.1
+
+Optional volunteer oversight, bounded random/rotating weekly allocation, private 1–10 evidence-based scores, friendly team inboxes/replies, notification opt-out, independent second looks, automatic private 14-day review analytics, on-demand eight-sheet Excel/CSV and a non-mutating setup/MC calculator are implemented. Configure roles explicitly and pilot with willing moderators. Discuss a common rubric, compare limited/full samples separately and treat suggested quotas as proposals, not automatic restrictions. These review-analysis schedules are distinct from the still-manual historical role scans described below.
+
 ## First deployment
 
 Before update, retain a verified private backup and note the service/application path. Install the checked release and complete LIVE_ACCEPTANCE.md with test accounts. Publish the user panel guide and share the moderator reference. Start reports with a small specific role rather than the whole server.

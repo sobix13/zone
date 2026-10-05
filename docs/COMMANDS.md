@@ -1,8 +1,14 @@
 # Registered command reference
 
-Generated from the V3 offline command tree. All commands are server-only. Current saved configuration determines exact roles, amounts and timing.
+Generated from the V3.2 offline command tree. All commands are server-only. Current saved configuration determines exact roles, amounts and timing.
 
-48 application commands: 46 slash commands and 2 message context actions.
+57 root application commands: 55 slash roots and 2 message context actions. Groups and their executable subcommands are listed below.
+
+## /admin_access
+
+Primary-admin-only access management
+
+**Access:** Primary administrator (server owner/original named admin/approved role or named people).
 
 ## /admin_guide
 
@@ -33,6 +39,22 @@ Message context action
 Create a consistent database backup (recovery owner)
 
 **Access:** Recovery owner and admin.
+
+## /config_request
+
+Open a configuration request by its full ID
+
+**Access:** Moderator (own requests); primary admin (all requests and approval).
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| request_id | Yes |  | … |
+
+## /config_requests
+
+Review pending settings requests or view your request history
+
+**Access:** Moderator (own requests); primary admin (all requests and approval).
 
 ## /doctor
 
@@ -190,6 +212,41 @@ Submit your review for an assigned post
 | score | Yes |  | Score 1-10 Range: 1 to 10. |
 | summary | Yes |  | Written feedback |
 | comment | No | None | Your X comment URL (optional) |
+
+## /review_analytics
+
+Prepare participation, moderator and setup reports as Excel and CSV (admin)
+
+**Access:** Admin.
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| days | No | 14 | … Range: 1 to 90. |
+
+## /review_analytics_status
+
+Download a private saved Excel and CSV participation report (admin)
+
+**Access:** Admin.
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| job_id | No | None | … |
+| retry | No | False | … |
+
+## /review_calculator
+
+Preview workload and MC assumptions without applying changes (admin)
+
+**Access:** Admin.
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| days | No | 14 | … Range: 1 to 90. |
+| max_reviews | No | None | … Range: 1 to 20. |
+| max_submits | No | None | … Range: 1 to 20. |
+| min_reviews | No | None | … Range: 1 to 10. |
+| review_reward | No | None | … Range: 0.0 to 1000.0. |
 
 ## /review_skip
 
@@ -376,7 +433,7 @@ Tune all numeric parameters
 
 Start configuration wizard
 
-**Access:** Admin.
+**Access:** Primary administrator (server owner/original named admin/approved role or named people).
 
 ## /setup_view
 
@@ -410,6 +467,74 @@ Submit a post for review
 |---|---|---|---|
 | link | Yes |  | Twitter/X post URL |
 
+## /support
+
+Private weekly review support and volunteer moderation
+
+**Access:** Member or panel-specific role.
+
+## /support availability
+
+Choose your own weekly capacities or pause without penalty
+
+**Access:** Selected volunteer moderator role.
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| available | No | True | … |
+| reviewers | No | 10 | … Range: 0 to 50. |
+| members | No | 0 | … Range: 0 to 50. |
+
+## /support panel
+
+Open your volunteer moderator workload
+
+**Access:** Selected volunteer moderator role.
+
+## /support resolve
+
+Record and privately deliver a second-look resolution (admin)
+
+**Access:** Admin.
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| request_id | Yes |  | … |
+| resolution | Yes |  | … |
+| revised_score | No | None | … Range: 1 to 10. |
+
+## /support setup
+
+Configure roles and automatic private review support (admin)
+
+**Access:** Admin.
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| moderator_role | Yes |  | … |
+| reviewer_role | No | None | … |
+| member_role | No | None | … |
+| weekly_cap | No | 10 | … Range: 1 to 50. |
+| samples | No | 3 | … Range: 1 to 5. |
+| enabled | No | True | … |
+
+## /support status
+
+Weekly workload and second-look overview (admin)
+
+**Access:** Admin.
+
+## /task_cooldown
+
+Change a community task cooldown immediately (moderator)
+
+**Access:** Moderator; immediate operation, no configuration approval.
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| cooldown | Yes |  | … |
+| task_id | No | None | … |
+
 ## /task_reset_cooldown
 
 Reset one member cooldown in the current community task (admin)
@@ -419,6 +544,16 @@ Reset one member cooldown in the current community task (admin)
 | Option | Required | Default | Details |
 |---|---|---|---|
 | user | Yes |  | … |
+
+## /team_messages
+
+Read private team feedback, reply or change DM notifications
+
+**Access:** Member or panel-specific role.
+
+| Option | Required | Default | Details |
+|---|---|---|---|
+| dm_notifications | No | None | … |
 
 ## /user_info
 

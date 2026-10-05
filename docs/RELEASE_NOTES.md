@@ -1,6 +1,33 @@
-# Melee Zone 3.0.0 release notes
+# Melee Zone 3.2.0 release notes
 
-## Behavior changes
+## V3.2 access and configuration governance
+
+- Distinct operational moderator and primary-administrator access, configurable by role and named people. Original named primary admin/server owner are preserved; native Discord Administrator alone does not authorize approval.
+- Persistent pending/approved/rejected/expired/stale configuration requests, complete old/new values, auditable decisions, seven-day expiry, bounded queues and paginated private views.
+- Shared approval guard on all direct/legacy/new setup commands and forms. Approval and settings changes are one transaction; conflicting or duplicate approvals do not overwrite or apply twice.
+- Community task creation/closure, per-task cooldown editing, automatic moderator bypass, member cooldown resets and daily MC/report/review tools remain immediate operational actions.
+- New `/admin_access`, `/config_requests`, `/config_request` and `/task_cooldown` commands. All V3.1 support/analytics/calculator features are included, not replaced.
+- Accepted searchable HTML and Word moderator handbook included unchanged. The internal reference builder uses a separate destination.
+- Updated full-source/update packages, integrity verifier, access documentation and backup-first Termius upgrade instructions. No extra runtime requirement.
+
+No live VPS upgrade or Discord gateway test is claimed by this source release. See TEST_REPORT.md and LIVE_ACCEPTANCE.md for the verification boundary.
+
+## V3.1 optional additions
+
+- Disabled-by-default reviewer/member support roles and explicitly volunteered moderator capacities.
+- Saved randomized weekly person allocation with least-recent support priority, bounded workload, no self-evaluation and no-penalty skip/pause.
+- Frozen previous-week evidence, private integer 1–10 scores, checked-sample validation and explicit insufficient-evidence state.
+- Persistent team inboxes in member/Reviews panels, private replies, DM opt-out and bounded notifications with inbox fallback.
+- Independent second looks with optional corrections stored separately from original ratings; no MC/role penalties.
+- Consecutive 14-day private reports and on-demand 1–90-day XLSX/CSV, with actual ledger flows separate from reward/workload estimates.
+- Eight-sheet authored report template with editable proposed settings and recalculating formulas, exact text IDs, typed dates, cached values and safe CSV text.
+- Conservative setup suggestions, finite row/queue/time budgets, background file generation, explicit bounded report retry and support-loop health checks.
+- Fixed the existing Reviews panel modal path to use an initial interaction response instead of a nonexistent follow-up modal API.
+- Existing Python requirements are unchanged. JSON schema and both XLSX templates are included in the verified full update/repository packages.
+
+MC balances and existing guild review settings remain unchanged by the new support layer. An admin explicitly chooses support roles after installation. See REVIEW_SUPPORT.md and UPGRADE_V3_1_FA.md for operating instructions.
+
+## Included V3.0 behavior
 
 - Raw MC reactions resolve channels and threads through cache and REST fallback.
 - MC events persist before worker execution; balance, ledger and reward identity commit together.
