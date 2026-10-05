@@ -12,7 +12,7 @@ from aiohttp import web
 from discord.ext import tasks
 from runtime_utils import utc_iso
 
-VERSION='3.0.0'
+from release_version import VERSION
 log=logging.getLogger('MeleeZone.Health')
 
 
@@ -60,7 +60,7 @@ class HealthRuntime:
         alive=not problems
         loops={}
         for cog in self.bot.cogs.values():
-            for name in ('weekly_cycle','daily_check','daily_update','report_worker','reaction_worker','notification_worker'):
+            for name in ('weekly_cycle','daily_check','daily_update','report_worker','reaction_worker','notification_worker','support_scheduler','support_worker','support_message_worker'):
                 loop=getattr(cog,name,None)
                 if isinstance(loop,tasks.Loop):
                     loops[f'{cog.qualified_name}.{name}']='running' if loop.is_running() else 'stopped'
@@ -102,7 +102,7 @@ class HealthRuntime:
         if not self.bot.is_ready():
             return repaired
         for cog in list(self.bot.cogs.values()):
-            for name in ('weekly_cycle','daily_check','daily_update','report_worker','reaction_worker','notification_worker'):
+            for name in ('weekly_cycle','daily_check','daily_update','report_worker','reaction_worker','notification_worker','support_scheduler','support_worker','support_message_worker'):
                 loop=getattr(cog,name,None)
                 if not isinstance(loop,tasks.Loop) or loop.is_running() or self.bot.is_closed():
                     continue

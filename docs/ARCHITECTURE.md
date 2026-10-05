@@ -2,7 +2,7 @@
 
 ## Main application
 
-`bot.py` loads 18 extensions and registers 48 application commands, including two message context actions. All user commands require a guild. Setup loads the additive SQLite schema before commands/workers become active. Failure to load a required extension aborts startup and appears in health.
+`bot.py` loads 19 extensions and registers 53 root application commands, including two message context actions and the `/support` group with five executable subcommands. All user commands require a guild. Setup loads the additive SQLite schema before commands/workers become active. Failure to load a required extension aborts startup and appears in health.
 
 `database.py` retains the V2 tables and interface. `operations_db.py` adds transaction boundaries, durable reaction inbox/outbox, activity index, report checkpoints, onboarding progress and operation audit. SQLite uses WAL, a five-second busy timeout and an application write lock. Network calls occur before or after write transactions, not inside them.
 
@@ -45,6 +45,12 @@ The exporter fills an XLSX template authored with Artifact Tool. Runtime generat
 The configured reviewer role and explicitly selected roles are observed. Member messages store ID, guild, author, destination, parent, UTC creation time and a bounded excerpt. Recent reactions and bot interactions store event type, destination and observed time. Historical REST history can recover retained messages, not historical reaction creation times, presence/voice or deleted content.
 
 Known message counts and window counts answer different questions. Recent observed records can be newer than a report's requested history bound. Roster is captured when requested; balances are read at export. These definitions are explicit in the moderator manual.
+
+## Optional review support
+
+`review_support_db.py` adds guild-scoped configuration/roster/volunteer tables, seeded weekly support assignments with frozen evidence, private evaluations/messages, independent second-look corrections and durable report jobs. It never updates MC balances or main review settings. `review_analytics.py` reads a separate bounded SQLite transaction; `review_support_xlsx.py` fills the second Artifact-authored XLSX template. CSV user text is escaped. IDs and UTC dates retain explicit XLSX types.
+
+Three loops handle 15-minute allocation/report scheduling, a ten-second serial report worker and a 15-second private-message worker. Role inventories are complete before replacement. Up to 100 new tasks are prepared per pass; queued tasks never force a volunteer over their opted-in capacity. Skips and insufficient evidence carry no financial penalty. See REVIEW_SUPPORT.md for cutoff rules, source budgets, estimator boundaries and privacy.
 
 ## Health and independent recovery
 

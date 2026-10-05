@@ -6,6 +6,8 @@ from typing import Optional, Dict, List
 import logging
 import re
 from operations_db import OperationsDB
+from review_support_db import ReviewSupportDB
+from governance_db import GovernanceDB
 
 log = logging.getLogger('MeleeZone.DB')
 
@@ -13,7 +15,7 @@ class DuplicateSubmissionError(Exception):
     pass
 
 
-class Database(OperationsDB):
+class Database(OperationsDB, ReviewSupportDB, GovernanceDB):
     def __init__(self, db_path: str = "bot.db"):
         self.db_path = db_path
         self._conn: Optional[aiosqlite.Connection] = None
@@ -319,13 +321,16 @@ class Database(OperationsDB):
 
             await db.commit()
         await self.init_operations()
+        await self.init_support()
+        await self.init_governance()
         log.info("Database ready")
 
     async def get_guild_config(self, guild_id: str) -> Optional[Dict]:
         db = await self._get_conn()
-        async with db.execute('SELECT * FROM guild_config WHERE guild_id = ?', (guild_id,)) as cur:
-            row = await cur.fetchone()
-            return dict(row) if row else None
+        async with self._lock:
+            async with db.execute('SELECT * FROM guild_config WHERE guild_id = ?', (guild_id,)) as cur:
+                row = await cur.fetchone()
+                return dict(row) if row else None
 
     async def create_guild_config(self, guild_id: str):
         db = await self._get_conn()
@@ -334,6 +339,10 @@ class Database(OperationsDB):
             await db.commit()
 
     async def update_guild_config(self, guild_id: str, **kwargs):
+        """Trusted internal writer. User-facing configuration must use governance."""
+        current = await self.get_guild_config(guild_id) or {}
+        if set(kwargs) - set(current):
+            raise ValueError('Unknown configuration field.')
         from runtime_utils import valid_amount
         for key,value in tuple(kwargs.items()):
             if key.startswith(('mc_','reaction_mc_','quiz_mc_')) and key!='quiz_mc_min_pct':
@@ -351,6 +360,17 @@ class Database(OperationsDB):
             await db.execute(f"UPDATE guild_config SET {fields} WHERE guild_id = ?", values)
             await db.commit()
 
+    async def edit_task_cooldown(self, guild_id, assignment_id, cooldown_seconds):
+        seconds = int(cooldown_seconds)
+        if not 0 <= seconds <= 7 * 86400:
+            raise ValueError('Task cooldown must be between zero and seven days.')
+        db = await self._get_conn()
+        async with self._lock:
+            cursor = await db.execute("UPDATE assignments_mgr SET cooldown_seconds=? WHERE guild_id=? AND id=? AND status='active'",
+                                      (seconds, str(guild_id), int(assignment_id)))
+            await db.commit()
+            return bool(cursor.rowcount)
+
     async def is_guild_configured(self, guild_id: str) -> bool:
         config = await self.get_guild_config(guild_id)
         return config is not None and config.get('is_configured') == 1
@@ -362,7 +382,7 @@ class Database(OperationsDB):
         if existing:
             return existing
         async with self._lock:
-            config = await self.get_guild_config(guild_id)
+            config = await self._governance_config(db, guild_id)
             max_s = config.get('max_submits_per_week', 5) if config else 5
             await db.execute(
                 'INSERT OR IGNORE INTO users (user_id, guild_id, username, role_type, weekly_submits) VALUES (?, ?, ?, ?, ?)',

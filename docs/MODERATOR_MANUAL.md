@@ -1,6 +1,10 @@
 # Melee Zone moderator manual
 
-Version 3.0.0 | Operating reference, training and member support
+Version 3.1.0 | Operating reference, training and member support
+
+## Volunteer review support
+
+The **Review support** admin-panel button configures optional weekly oversight and private fortnightly reports. It is disabled until roles are selected. Volunteer moderators use `/support panel` and choose capacities. Defaults are ten reviewers and zero content members weekly. Skip/pause never penalizes MC or forces overload. Scores 1–10 are private, evidence-based and distinct from content scores; no evidence remains unrated. **Team messages** supports feedback, replies, DM opt-out and independent second looks. The [full support guide](REVIEW_SUPPORT.md) defines allocation, rubric, calculator formulas, scope, privacy and all failure limits.
 
 ## Purpose and authority
 

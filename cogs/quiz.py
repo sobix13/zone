@@ -12,6 +12,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from helpers import BotHelpers
+from config_service import request_config_change
 from config import Config, mz
 from datetime import datetime, timezone
 import pytz
@@ -170,7 +171,7 @@ class QuizMCModal(AdminModal, title="Edit Quiz MC Values"):
                 except ValueError:
                     pass
         if updates:
-            await self.db.update_guild_config(guild_id, **updates)
+            if not await request_config_change(interaction, **updates):return
         await interaction.followup.send(
             embed=discord.Embed(
                 title="✅ Quiz MC Values Updated",
@@ -641,7 +642,7 @@ class QuizCog(BotHelpers, commands.Cog, name="Quiz"):
         config = await self.require_admin(interaction)
         if config is None:
             return
-        await self.db.update_guild_config(str(interaction.guild_id), quiz_pass_role_id=str(role.id))
+        if not await request_config_change(interaction, quiz_pass_role_id=str(role.id)):return
         await interaction.followup.send(
             embed=discord.Embed(
                 title="✅ Quiz Pass Role Set",

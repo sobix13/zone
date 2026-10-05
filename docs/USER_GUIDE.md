@@ -1,5 +1,9 @@
 # Melee Zone member and Meleeionaires guide
 
+## Private team feedback
+
+Open **Team messages** in the main panel or Reviews panel, or use `/team_messages`. Friendly suggestions stay in your private inbox even if DMs are closed. You can reply, turn DM notifications off or request a second look. A moderator's private 1–10 score describes checked samples; it is not your post's content score and does not automatically change your MC or roles. Missing samples are not scored as zero. You are not required to reply immediately. The [review support guide](REVIEW_SUPPORT.md) explains the evidence and appeal process.
+
 ## Your first five minutes
 
 1. Open the server's Melee Zone panel or run `/onboard`.

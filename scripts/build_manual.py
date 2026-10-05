@@ -5,7 +5,7 @@ from pathlib import Path
 import markdown
 
 ROOT=Path(__file__).resolve().parents[1]
-PAGES=['MODERATOR_MANUAL.md','USER_GUIDE.md','OPERATIONS.md','ROOT_CAUSES.md','COMMANDS.md','LIVE_ACCEPTANCE.md','ROADMAP.md']
+PAGES=['MODERATOR_MANUAL.md','USER_GUIDE.md','REVIEW_SUPPORT.md','OPERATIONS.md','ROOT_CAUSES.md','COMMANDS.md','LIVE_ACCEPTANCE.md','ROADMAP.md']
 STYLE='''
 :root{--ink:#29343b;--brand:#79323d;--muted:#647179;--paper:#fff;--line:#e7dddd}
 *{box-sizing:border-box}body{margin:0;color:var(--ink);background:#f8f5f5;font:16px/1.65 system-ui,-apple-system,Segoe UI,Arial,sans-serif}
@@ -27,12 +27,12 @@ li{margin:6px 0}hr{border:0;border-top:1px solid var(--line);margin:30px 0}foote
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--output',type=Path,default=ROOT/'docs'/'Melee-Zone-Moderator-Manual.html')
+    parser.add_argument('--output',type=Path,default=ROOT/'docs'/'internal'/'Operations-Reference.html')
     args=parser.parse_args()
     text='\n\n---\n\n'.join((ROOT/'docs'/name).read_text() for name in PAGES)
     renderer=markdown.Markdown(extensions=['tables','fenced_code','toc'],extension_configs={'toc':{'toc_depth':'1-2'}})
     body=renderer.convert(text)
-    result=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Melee Zone V3 moderator reference</title><style>{STYLE}</style></head><body><header><h1>Melee Zone V3</h1><p>Moderator reference, member training, operations and recovery | Version 3.0.0</p></header><div class="layout"><nav aria-label="Contents"><strong>Contents</strong>{renderer.toc}</nav><main>{body}</main></div><footer>Melee Zone 3.0.0 | Use the current server configuration for amounts, roles and deadlines. Print this page to retain an offline reference.</footer></body></html>'''
+    result=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Melee Zone internal operations reference</title><style>{STYLE}</style></head><body><header><h1>Melee Zone internal reference</h1><p>Internal setup, operations and recovery. This is not the approved moderator handbook.</p></header><div class="layout"><nav aria-label="Contents"><strong>Contents</strong>{renderer.toc}</nav><main>{body}</main></div><footer>Use the current server configuration for amounts, roles and deadlines.</footer></body></html>'''
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(result)
     print('Standalone reference built:',args.output.name)

@@ -5,6 +5,7 @@ from discord.ext import commands
 from helpers import BotHelpers
 from config import Config, get_current_week_id, mz
 from ui_security import AdminView,AdminModal
+from config_service import request_config_change, reply
 
 
 def role_ref(guild, role_id):
@@ -22,7 +23,8 @@ def config_embed(guild, c):
     e = discord.Embed(title="⚙️ Full Configuration", color=mz('secondary'))
     e.add_field(name="Roles & Access", value=(
         f"Reviewer: {role_ref(guild,c.get('pro_role_id'))}\nBasic: {role_ref(guild,c.get('basic_role_id'))}\n"
-        f"Admin: {role_ref(guild,c.get('admin_role_id'))}\nQuiz: {role_ref(guild,c.get('quiz_pass_role_id'))}\n"
+        f"Legacy admin: {role_ref(guild,c.get('admin_role_id'))}\nModerator panel: {role_ref(guild,c.get('moderator_role_id'))}\n"
+        f"Primary admin role: {role_ref(guild,c.get('super_admin_role_id'))}\nQuiz: {role_ref(guild,c.get('quiz_pass_role_id'))}\n"
         f"Raffle: {role_ref(guild,c.get('raffle_role_id'))}"), inline=False)
     e.add_field(name="Channels", value=(
         f"Panel: {channel_ref(guild,c.get('bot_content_channel_id'))}\nShowcase: {channel_ref(guild,c.get('showcase_channel_id'))}\n"
@@ -59,7 +61,7 @@ class RulesModal(AdminModal, title="Content & Review Rules"):
     async def on_submit(self,i):
         try:u={'max_submits_per_week':max(1,int(self.submits.value)),'max_reviews_per_week':max(1,int(self.reviews.value)),'min_reviews':max(1,int(self.minimum.value)),'showcase_threshold':min(10,max(1,float(self.showcase.value)))}
         except ValueError:return await i.response.send_message("Use valid numbers.",ephemeral=True)
-        await self.db.update_guild_config(str(i.guild_id),**u);await i.response.send_message("✅ Rules updated.",ephemeral=True)
+        if await request_config_change(i,**u):await reply(i,"✅ Rules updated.")
 
 
 class ScoreRewardsModal(AdminModal,title="Post & Review Rewards"):
@@ -72,7 +74,7 @@ class ScoreRewardsModal(AdminModal,title="Post & Review Rewards"):
     async def on_submit(self,i):
         try:v=[float(x.value) for x in [self.low,self.medium,self.high,self.completion,self.review]];assert all(x>=0 for x in v)
         except (ValueError,AssertionError):return await i.response.send_message("Use zero or positive numbers.",ephemeral=True)
-        await self.db.update_guild_config(str(i.guild_id),mc_score_low=v[0],mc_score_medium=v[1],mc_score_high=v[2],mc_submit_completion=v[3],mc_review_reward=v[4]);await i.response.send_message("✅ Rewards updated.",ephemeral=True)
+        if await request_config_change(i,mc_score_low=v[0],mc_score_medium=v[1],mc_score_high=v[2],mc_submit_completion=v[3],mc_review_reward=v[4]):await reply(i,"✅ Rewards updated.")
 
 
 class BonusModal(AdminModal,title="Bonus & Quiz Rewards"):
@@ -84,7 +86,7 @@ class BonusModal(AdminModal,title="Bonus & Quiz Rewards"):
     async def on_submit(self,i):
         try:v=[float(x.value) for x in [self.comment,self.showcase,self.q40,self.q70,self.q90]];assert all(x>=0 for x in v)
         except (ValueError,AssertionError):return await i.response.send_message("Use zero or positive numbers.",ephemeral=True)
-        await self.db.update_guild_config(str(i.guild_id),mc_comment_bonus=v[0],mc_showcase_reward=v[1],quiz_mc_40=v[2],quiz_mc_70=v[3],quiz_mc_90=v[4]);await i.response.send_message("✅ Bonuses updated.",ephemeral=True)
+        if await request_config_change(i,mc_comment_bonus=v[0],mc_showcase_reward=v[1],quiz_mc_40=v[2],quiz_mc_70=v[3],quiz_mc_90=v[4]):await reply(i,"✅ Bonuses updated.")
 
 
 class QuizRewardsModal(AdminModal,title="Complete Quiz Reward Setup"):
@@ -99,7 +101,7 @@ class QuizRewardsModal(AdminModal,title="Complete Quiz Reward Setup"):
     async def on_submit(self,i):
         try:v=[float(x.value) for x in [self.minimum,self.q40,self.q70,self.q80,self.q90]];assert 0<=v[0]<=100 and all(x>=0 for x in v[1:])
         except (ValueError,AssertionError):return await i.response.send_message("Use valid zero or positive values and a percent from 0 to 100.",ephemeral=True)
-        await self.db.update_guild_config(str(i.guild_id),quiz_mc_min_pct=v[0],quiz_mc_40=v[1],quiz_mc_70=v[2],quiz_mc_80=v[3],quiz_mc_90=v[4]);await i.response.send_message("✅ Quiz rewards updated.",ephemeral=True)
+        if await request_config_change(i,quiz_mc_min_pct=v[0],quiz_mc_40=v[1],quiz_mc_70=v[2],quiz_mc_80=v[3],quiz_mc_90=v[4]):await reply(i,"✅ Quiz rewards updated.")
 
 
 class TimingModal(AdminModal,title="Timing & Validation"):
@@ -114,12 +116,14 @@ class TimingModal(AdminModal,title="Timing & Validation"):
     async def on_submit(self,i):
         try:v=[int(x.value) for x in [self.main_days,self.total_days,self.grace,self.rescue,self.feedback]];assert all(x>0 for x in v) and v[1]>=v[0]
         except (ValueError,AssertionError):return await i.response.send_message("Use positive numbers. Total days must be at least the main period.",ephemeral=True)
-        await self.db.update_guild_config(str(i.guild_id),primary_review_days=v[0],total_review_days=v[1],warning_grace_hours=v[2],rescue_review_limit=v[3],min_feedback_length=v[4]);await i.response.send_message("✅ Review timing updated.",ephemeral=True)
+        if await request_config_change(i,primary_review_days=v[0],total_review_days=v[1],warning_grace_hours=v[2],rescue_review_limit=v[3],min_feedback_length=v[4]):await reply(i,"✅ Review timing updated.")
 
 
 class ConfigRoleSelect(discord.ui.RoleSelect):
     def __init__(self,db,key,label):super().__init__(placeholder=label,min_values=1,max_values=1);self.db=db;self.key=key
-    async def callback(self,i):await self.db.update_guild_config(str(i.guild_id),**{self.key:str(self.values[0].id)});await i.response.send_message(f"✅ {self.values[0].mention} saved.",ephemeral=True)
+    async def callback(self,i):
+        if self.values[0].is_default():return await reply(i,'Select a specific role, not @everyone.')
+        if await request_config_change(i,**{self.key:str(self.values[0].id)}):await reply(i,f"✅ {self.values[0].mention} saved.")
 class RolesView(AdminView):
     def __init__(self,db):
         super().__init__(timeout=300)
@@ -128,7 +132,8 @@ class RolesView(AdminView):
 
 class ConfigChannelSelect(discord.ui.ChannelSelect):
     def __init__(self,db,key,label):super().__init__(placeholder=label,channel_types=[discord.ChannelType.text],min_values=1,max_values=1);self.db=db;self.key=key
-    async def callback(self,i):await self.db.update_guild_config(str(i.guild_id),**{self.key:str(self.values[0].id)});await i.response.send_message(f"✅ {self.values[0].mention} saved.",ephemeral=True)
+    async def callback(self,i):
+        if await request_config_change(i,**{self.key:str(self.values[0].id)}):await reply(i,f"✅ {self.values[0].mention} saved.")
 class ChannelsView(AdminView):
     def __init__(self,db,page):
         super().__init__(timeout=300)
@@ -163,6 +168,11 @@ class SetupCenterView(AdminView):
         c=await self.db.get_guild_config(str(i.guild_id)) or {};await i.response.send_message("Edit names, messages, reactions and About.",view=AdvancedSettingsMenuView(self.db,c),ephemeral=True)
     @discord.ui.button(label="😀 Reaction Setup",style=discord.ButtonStyle.secondary,row=3)
     async def react(self,i,b):await i.response.send_message("Use `/setup_reactions` for MC and `/setup_raffle_reaction` for raffle. Both remain stored in this setup.",ephemeral=True)
+
+    @discord.ui.button(label='Access management',style=discord.ButtonStyle.danger,row=4)
+    async def access(self,i,b):
+        from cogs.governance import AccessView, require_primary
+        if await require_primary(i):await reply(i,'Only primary admins manage moderator access, the primary-admin role and named primary admins.',view=AccessView())
 
 
 class GuideView(AdminView):
@@ -220,7 +230,7 @@ class UnifiedAdminView(AdminView):
     @discord.ui.button(label="💎 Rewards",style=discord.ButtonStyle.secondary,custom_id="mz_hub_rewards",row=0)
     async def rewards(self,i,b):c=await self.db.get_guild_config(str(i.guild_id)) or {};await i.response.send_message("Reward and access tools",view=RewardsView(self.db,c),ephemeral=True)
     @discord.ui.button(label="⚙️ Setup",style=discord.ButtonStyle.secondary,custom_id="mz_hub_setup",row=1)
-    async def setup(self,i,b):await i.response.send_message(embed=discord.Embed(title="⚙️ Setup Center",description="All configuration in one place.",color=mz('primary')),view=SetupCenterView(self.db),ephemeral=True)
+    async def setup(self,i,b):await i.response.send_message(embed=discord.Embed(title="⚙️ Setup Center",description="View current settings or submit a change. Moderator changes wait for primary-admin approval; primary admins apply directly.",color=mz('primary')),view=SetupCenterView(self.db),ephemeral=True)
     @discord.ui.button(label="📖 Guide",style=discord.ButtonStyle.success,custom_id="mz_hub_guide",row=1)
     async def guide(self,i,b):await i.response.send_message(embed=discord.Embed(title="📖 Admin Guide",description="One guide organized by feature.",color=mz('secondary')),view=GuideView(),ephemeral=True)
 
@@ -233,6 +243,16 @@ class UnifiedAdminView(AdminView):
     async def health(self,i,b):
         from cogs.health import HealthView,health_embed
         await i.response.send_message(embed=health_embed(i.client.health.snapshot()),view=HealthView(),ephemeral=True)
+
+    @discord.ui.button(label='Review support and analytics',style=discord.ButtonStyle.secondary,custom_id='mz_hub_review_support',row=2)
+    async def review_support(self,i,b):
+        from cogs.review_support import SupportAdminView
+        await i.response.send_message('Private fortnightly Excel/CSV reports, editable setup calculator and volunteer weekly support.',view=SupportAdminView(),ephemeral=True)
+
+    @discord.ui.button(label='Change requests',style=discord.ButtonStyle.secondary,custom_id='mz_hub_config_requests',row=3)
+    async def change_requests(self,i,b):
+        from cogs.governance import show_requests
+        await show_requests(i)
 
 
 class ControlCenterCog(BotHelpers,commands.Cog,name="ControlCenter"):

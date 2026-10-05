@@ -2,6 +2,8 @@
 
 ## Processes and ownership
 
+V3.1 also monitors `support_scheduler`, `support_worker` and `support_message_worker`. Review support stays disabled until configured. Its 14-day files are private under `REPORT_DIR/review-support`; nothing is automatically published. One report worker, two queued/running jobs per guild, source-row budgets and bounded retries constrain load. There is no automatic purge. See [support limits and recovery](REVIEW_SUPPORT.md#faults-limits-and-recovery). Existing services and recovery-owner policy remain unchanged.
+
 The installer manages two systemd units:
 
 - `melee-zone.service`: gateway connection, commands, MC, task rules, role scans and localhost health.

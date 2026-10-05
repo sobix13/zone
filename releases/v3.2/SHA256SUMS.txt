@@ -1,0 +1,2 @@
+080d77d5adfd41652b401b977047803f3b8091f143613edfeeac28f649d3f962  Melee-Zone-V3.2-update.tar.gz
+5d0c9a6d28b8afd5f0160a70e22eba1c6b486927cd5617f5012e4c7b5935cd9e  Melee-Zone-V3.2-repository.zip

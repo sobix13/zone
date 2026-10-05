@@ -181,10 +181,12 @@ async def test_all_extensions_commands_and_persistent_views(tmp_path,monkeypatch
     from bot import MeleeZoneBot
     async with MeleeZoneBot() as bot:
         await bot.setup_hook()
-        assert len(bot.cogs)==18
+        assert len(bot.cogs)==20
         commands=bot.tree.get_commands()
-        assert len(commands)==48
+        assert len(commands)==57
         assert {c.name for c in commands}>={'give_mc','role_report','health','doctor','recovery_setup','onboard','snapshot'}
+        assert {c.name for c in commands}>={'support','review_analytics','review_analytics_status','review_calculator','team_messages'}
+        assert {c.name for c in commands}>={'admin_access','config_requests','config_request','task_cooldown'}
         ids=[c.custom_id for v in bot.persistent_views for c in v.children]
         assert len(ids)==len(set(ids))
 
