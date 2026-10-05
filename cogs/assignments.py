@@ -12,6 +12,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from helpers import BotHelpers
+from config_service import request_config_change, reply
 from config import Config, mz
 from runtime_utils import authorized, utc_iso
 from datetime import datetime, timezone, timedelta
@@ -19,6 +20,50 @@ import logging
 
 log = logging.getLogger('MeleeZone.Assignments')
 UTC = timezone.utc
+
+
+def parse_task_cooldown(text):
+    import re
+    match = re.fullmatch(r'(\d+)([mhd]?)', (text or '0').strip().lower())
+    if not match:
+        raise ValueError('Use 0, seconds, or a duration such as 30m, 1h, 24h or 7d.')
+    seconds = int(match[1]) * {'':1, 'm':60, 'h':3600, 'd':86400}[match[2]]
+    if not 0 <= seconds <= 7 * 86400:
+        raise ValueError('Task cooldown must be between zero and seven days.')
+    return seconds
+
+
+async def change_task_cooldown(interaction, assignment_id, cooldown):
+    if not interaction.response.is_done():await interaction.response.defer(ephemeral=True)
+    if not await authorized(interaction):return
+    try:
+        seconds = parse_task_cooldown(cooldown)
+        aid = int(assignment_id)
+    except (ValueError, TypeError) as exc:
+        return await reply(interaction, str(exc))
+    items = await interaction.client.db.get_assignments_mgr(str(interaction.guild_id), status='active')
+    target = next((a for a in items if a['id'] == aid), None)
+    if not target:return await reply(interaction, 'Active task not found in this server.')
+    changed = await interaction.client.db.edit_task_cooldown(str(interaction.guild_id), aid, seconds)
+    if not changed:return await reply(interaction, 'This task closed before the change. Refresh the task list.')
+    note = ''
+    from runtime_utils import resolve_channel
+    thread = await resolve_channel(interaction.client, interaction.guild, target['thread_id']) if target.get('thread_id') else None
+    if thread and getattr(thread, 'slowmode_delay', 0):
+        try:
+            await thread.edit(slowmode_delay=0, reason='Use bot-managed task cooldown; moderators bypass it')
+        except discord.HTTPException:
+            note = '\nDiscord native slowmode is still active. Ask an admin to grant Manage Threads and run /doctor repair:true.'
+    await interaction.client.db.record_operation('task_cooldown', 'updated', guild_id=str(interaction.guild_id),
+        detail=f"Task {aid}; actor {interaction.user.id}; {target['cooldown_seconds']} -> {seconds} seconds")
+    await reply(interaction, f'Task #{aid} cooldown: {_fmt_cooldown(seconds)}. Moderator bypass is unchanged.' + note)
+
+
+class TaskCooldownModal(AdminModal, title='Change task cooldown'):
+    assignment_id = discord.ui.TextInput(label='Active task ID', max_length=10)
+    cooldown = discord.ui.TextInput(label='Cooldown: 0, 30m, 1h, 24h, or 7d', max_length=10)
+    async def on_submit(self, interaction):
+        await change_task_cooldown(interaction, self.assignment_id.value, self.cooldown.value)
 
 
 def _fmt_cooldown(seconds: int) -> str:
@@ -65,25 +110,13 @@ class CreateAssignmentModal(AdminModal, title="New Community Task"):
         self.guild = guild
 
     def _parse_cooldown(self, text: str) -> int:
-        text = (text or "").strip().lower()
-        if not text or text == "0":
-            return 0
-        try:
-            if text.endswith('d'):
-                return int(text[:-1]) * 86400
-            if text.endswith('h'):
-                return int(text[:-1]) * 3600
-            if text.endswith('m'):
-                return int(text[:-1]) * 60
-            return int(text)
-        except ValueError:
-            return 0
+        return parse_task_cooldown(text)
 
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         if not await authorized(interaction):
             return
-        config = self.config
+        config = await self.db.get_guild_config(str(interaction.guild_id)) or {}
         channel_id = config.get('assignment_channel_id')
         if not channel_id:
             return await interaction.followup.send(
@@ -94,9 +127,10 @@ class CreateAssignmentModal(AdminModal, title="New Community Task"):
         if not channel:
             return await interaction.followup.send("Assignment channel not found.", ephemeral=True)
 
-        cooldown_seconds = self._parse_cooldown(self.cooldown.value)
-        # cap at 7 days
-        cooldown_seconds = max(0,min(cooldown_seconds, 7 * 86400))
+        try:
+            cooldown_seconds = self._parse_cooldown(self.cooldown.value)
+        except ValueError as exc:
+            return await reply(interaction, str(exc))
         is_recurring = 1 if self.recurring.value.strip().lower() in ('yes', 'y', 'true', '1') else 0
 
         permissions = channel.permissions_for(self.guild.me)
@@ -239,6 +273,14 @@ class AssignmentAdminView(AdminView):
     async def close_assignment(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_modal(CloseAssignmentModal(self.db, interaction.guild))
 
+    @discord.ui.button(label='Change cooldown',style=discord.ButtonStyle.secondary,row=1)
+    async def edit_cooldown(self,interaction,button):
+        await interaction.response.send_modal(TaskCooldownModal())
+
+    @discord.ui.button(label='Skip member cooldown',style=discord.ButtonStyle.secondary,row=1)
+    async def skip_cooldown(self,interaction,button):
+        await reply(interaction,'In the task thread, use `/task_reset_cooldown user:` to let a member post immediately. Moderators already bypass task cooldown automatically.')
+
 
 class CloseAssignmentModal(AdminModal, title="Close Assignment"):
     assignment_id = discord.ui.TextInput(label="Assignment ID (e.g. 3)", max_length=10)
@@ -302,7 +344,7 @@ class AssignmentsCog(BotHelpers, commands.Cog, name="Assignments"):
         config = await self.require_admin(interaction)
         if config is None:
             return
-        await self.db.update_guild_config(str(interaction.guild_id), assignment_channel_id=str(channel.id))
+        if not await request_config_change(interaction, assignment_channel_id=str(channel.id)):return
         await interaction.followup.send(
             embed=discord.Embed(
                 title="✅ Assignment Channel Set",

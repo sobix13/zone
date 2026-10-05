@@ -110,10 +110,21 @@ class MCToolsCog(BotHelpers,commands.Cog,name='MCTools'):
         if await self.require_admin(interaction) is None:
             return
         assignment=await self.db.get_assignment_by_thread(str(interaction.channel_id))
-        if not assignment:
+        if not assignment or assignment['guild_id'] != str(interaction.guild_id) or assignment['status'] != 'active':
             return await interaction.followup.send('Run this inside a community task thread.',ephemeral=True)
         await self.db.reset_task_cooldown(str(interaction.channel_id),str(user.id))
         await interaction.followup.send('Member cooldown reset.',ephemeral=True)
+
+    @app_commands.command(name='task_cooldown',description='Change a community task cooldown immediately (moderator)')
+    async def task_cooldown(self,interaction:discord.Interaction,cooldown:str,task_id:int=None):
+        from cogs.assignments import change_task_cooldown
+        await interaction.response.defer(ephemeral=True)
+        if task_id is None:
+            assignment=await self.db.get_assignment_by_thread(str(interaction.channel_id))
+            task_id=assignment['id'] if assignment and assignment['guild_id']==str(interaction.guild_id) else None
+        if task_id is None:
+            return await interaction.followup.send('Choose a task ID or run inside its task thread.',ephemeral=True)
+        await change_task_cooldown(interaction,task_id,cooldown)
 
 
 async def setup(bot):

@@ -8,6 +8,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from helpers import BotHelpers
+from config_service import request_config_change
 from config import Config, mz
 from role_utils import role_manage_error, resolve_member
 import logging
@@ -26,7 +27,7 @@ class RaffleCog(BotHelpers, commands.Cog, name="Raffle"):
         config = await self.require_admin(interaction)
         if config is None:
             return
-        await self.db.update_guild_config(str(interaction.guild_id), raffle_role_id=str(role.id))
+        if not await request_config_change(interaction, raffle_role_id=str(role.id)):return
         await interaction.followup.send(
             embed=discord.Embed(
                 title="✅ Raffle Role Set",

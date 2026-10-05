@@ -1,4 +1,5 @@
 from ui_security import AdminView,AdminModal
+from config_service import request_config_change
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -25,15 +26,8 @@ def _is_pro(member, config):
     return bool(role and role in member.roles)
 
 def _is_admin(member, config):
-    if member.guild_permissions.administrator:
-        return True
-    if config.get('admin_role_id'):
-        role = member.guild.get_role(int(config['admin_role_id']))
-        if role and role in member.roles:
-            return True
-    if config.get('admin_user_id') and str(member.id) == str(config.get('admin_user_id')):
-        return True
-    return False
+    from access_policy import is_operator
+    return is_operator(member, config)
 
 async def _cfg(interaction):
     return await interaction.client.db.get_guild_config(str(interaction.guild_id)) or {}
@@ -252,7 +246,7 @@ class EditAboutModal(AdminModal, title="Edit About Text"):
 
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
-        await self.db.update_guild_config(str(interaction.guild_id), txt_about=self.about_text.value.strip())
+        if not await request_config_change(interaction, txt_about=self.about_text.value.strip()):return
         await interaction.followup.send(embed=discord.Embed(title="✅ About Updated", color=mz('green')), ephemeral=True)
 
 
@@ -277,7 +271,7 @@ class NumberSettingsModal(AdminModal, title="Update Numeric Settings"):
                 except ValueError:
                     pass
         if updates:
-            await self.db.update_guild_config(str(interaction.guild_id), **updates)
+            if not await request_config_change(interaction, **updates):return
         await interaction.followup.send(embed=discord.Embed(title="✅ Updated", description="\n".join(changed) or "No changes.", color=mz('green')), ephemeral=True)
 
 
@@ -302,7 +296,7 @@ class CreditValuesModal(AdminModal, title="Edit MC Credit Values"):
                 except ValueError:
                     pass
         if updates:
-            await self.db.update_guild_config(str(interaction.guild_id), **updates)
+            if not await request_config_change(interaction, **updates):return
         await interaction.followup.send(embed=discord.Embed(title="✅ MC Values Updated", description="\n".join(changed) or "No changes.", color=mz('green')), ephemeral=True)
 
 
@@ -324,7 +318,7 @@ class TextsModal(AdminModal, title="Edit Texts & Names"):
             if val.strip():
                 updates[key] = val.strip(); changed.append(f"{label}: **{val.strip()}**")
         if updates:
-            await self.db.update_guild_config(str(interaction.guild_id), **updates)
+            if not await request_config_change(interaction, **updates):return
         await interaction.followup.send(embed=discord.Embed(title="✅ Texts Updated", description="\n".join(changed) or "No changes.", color=mz('green')), ephemeral=True)
 
 
@@ -346,7 +340,7 @@ class AutoMessagesModal(AdminModal, title="Edit Automated Messages"):
             if val.strip():
                 updates[key] = val.strip(); changed.append(f"{label} updated")
         if updates:
-            await self.db.update_guild_config(str(interaction.guild_id), **updates)
+            if not await request_config_change(interaction, **updates):return
         await interaction.followup.send(embed=discord.Embed(title="✅ Messages Updated", description="\n".join(changed) or "No changes.", color=mz('green')), ephemeral=True)
 
 
@@ -385,7 +379,7 @@ class ReactionSettingsModal(AdminModal, title="Edit Reaction Emojis & MC"):
                     changed.append(f"Emoji 3: {parts[0].strip()} → {parts[1].strip()}")
                 except ValueError: pass
         if updates:
-            await self.db.update_guild_config(str(interaction.guild_id), **updates)
+            if not await request_config_change(interaction, **updates):return
         await interaction.followup.send(embed=discord.Embed(title="✅ Reactions Updated", description="\n".join(changed) or "No changes.", color=mz('green')), ephemeral=True)
 
 
@@ -555,6 +549,10 @@ class ReviewsView(discord.ui.View):
         self.db = db
         self.config = config
 
+    @discord.ui.button(label="Team messages", style=discord.ButtonStyle.secondary, row=2)
+    async def team_messages(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.client.get_cog('ReviewSupport').open_inbox(interaction)
+
     @discord.ui.button(label="📋 Assignments", style=discord.ButtonStyle.primary, row=0)
     async def assignments(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer(ephemeral=True)
@@ -592,9 +590,7 @@ class ReviewsView(discord.ui.View):
             return await interaction.response.send_message(f"{Config.pro_role_name(config)} role required.", ephemeral=True)
         if not await _require_x(interaction, self.db, config):
             return
-        embed = discord.Embed(title="✍️ Submit a Review", description="**Be fair — give the feedback you would like to receive.**\n\n📌 Written feedback required.\n🔗 Provide X comment link on ALL reviews to earn the bonus.", color=mz('primary'))
-        await interaction.response.send_message(embed=embed, ephemeral=True)
-        await interaction.followup.send_modal(ReviewSubmitModal(self.db, config))
+        await interaction.response.send_modal(ReviewSubmitModal(self.db, config))
 
     @discord.ui.button(label="🙋 Ready for More", style=discord.ButtonStyle.secondary, row=1)
     async def ready_for_more(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -682,6 +678,16 @@ class MainPanelView(discord.ui.View):
     def __init__(self, db):
         super().__init__(timeout=None)
         self.db = db
+
+    @discord.ui.button(label="Team messages", style=discord.ButtonStyle.secondary, custom_id="mz_main_team_messages", row=2)
+    async def team_messages(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.client.get_cog('ReviewSupport').open_inbox(interaction)
+
+    @discord.ui.button(label="Moderator support", style=discord.ButtonStyle.secondary, custom_id="mz_main_moderator_support", row=2)
+    async def moderator_support(self, interaction: discord.Interaction, button: discord.ui.Button):
+        support = interaction.client.get_cog('ReviewSupport')
+        if await support.require_moderator(interaction):
+            await support.open_moderator(interaction)
 
     @discord.ui.button(label="Dashboard", style=discord.ButtonStyle.primary, custom_id="mz_main_dashboard", row=0)
     async def dashboard(self, interaction: discord.Interaction, button: discord.ui.Button):

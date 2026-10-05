@@ -4,6 +4,8 @@ from discord.ext import commands
 from helpers import BotHelpers
 from config import Config, mz
 from datetime import datetime
+from config_service import request_config_change, reply, current_member
+from ui_security import AdminView
 
 
 class SetupCog(BotHelpers, commands.Cog, name="Setup"):
@@ -16,15 +18,25 @@ class SetupCog(BotHelpers, commands.Cog, name="Setup"):
         guild_id = str(interaction.guild_id)
         await self.db.create_guild_config(guild_id)
         config = await self.db.get_guild_config(guild_id) or {}
-        if not self.is_admin(interaction.user, config):
-            return await interaction.followup.send("Administrator permission required.", ephemeral=True)
+        if not self.is_primary_admin(await current_member(interaction), config):
+            return await interaction.followup.send("A primary administrator or server owner must start setup.", ephemeral=True)
         if await self.db.is_guild_configured(guild_id):
             return await interaction.followup.send("Already configured. Use `/setup_view` or `/setup_reset`.", ephemeral=True)
         embed = discord.Embed(title="⚙️ Melee Zone — Setup Step 1/3", description="**Who has admin access to this bot?**\n\nAfter this:\n→ `/setup_roles` → `/setup_channels`\n→ `/panel` in bot channel\n→ `/setup_leaderboard` in leaderboard channel", color=mz('primary'))
-        view = discord.ui.View(timeout=120)
+        view = AdminView(timeout=120)
         async def just_me(btn: discord.Interaction):
-            await self.db.update_guild_config(guild_id, admin_user_id=str(interaction.user.id))
-            await btn.response.edit_message(embed=discord.Embed(title="✅ Admin set to you", description="Now run `/setup_roles`.", color=mz('green')), view=None)
+            if btn.user.id != interaction.user.id or btn.guild_id != interaction.guild_id:
+                return await reply(btn, 'This setup confirmation belongs to another administrator.')
+            await btn.response.defer(ephemeral=True)
+            latest = await self.db.get_guild_config(guild_id) or {}
+            if latest.get('admin_user_id'):
+                return await reply(btn, 'The existing primary administrator is retained. Use Access management to add people or a role.')
+            try:
+                await self.db.submit_config_change(guild_id, await current_member(btn), 'guild',
+                    {'admin_user_id':str(btn.user.id)}, source_id=str(btn.id), access=True, reason='Initial primary-admin setup')
+            except (PermissionError, ValueError) as exc:
+                return await reply(btn, str(exc))
+            await btn.edit_original_response(embed=discord.Embed(title="✅ Primary admin set", description="Now run `/setup_roles`.", color=mz('green')), view=None)
         b = discord.ui.Button(label="Just Me", style=discord.ButtonStyle.primary)
         b.callback = just_me
         view.add_item(b)
@@ -42,7 +54,7 @@ class SetupCog(BotHelpers, commands.Cog, name="Setup"):
             updates['basic_role_id'] = str(basic_role.id)
         if admin_role:
             updates['admin_role_id'] = str(admin_role.id)
-        await self.db.update_guild_config(str(interaction.guild_id), **updates)
+        if not await request_config_change(interaction, **updates):return
         lines = [f"✅ Reviewer: {pro_role.mention}"]
         if basic_role:
             lines.append(f"✅ Basic: {basic_role.mention}")
@@ -65,7 +77,7 @@ class SetupCog(BotHelpers, commands.Cog, name="Setup"):
             updates['credit_log_channel_id'] = str(credit_log_channel.id)
         if review_channel:
             updates['review_channel_id'] = str(review_channel.id)
-        await self.db.update_guild_config(str(interaction.guild_id), **updates)
+        if not await request_config_change(interaction, **updates):return
         embed = discord.Embed(title="✅ Setup Complete", description=f"Bot Panel: {bot_content_channel.mention}\nShowcase: {showcase_channel.mention}\nLeaderboard: {leaderboard_channel.mention}\n\n→ Run `/panel` in bot content channel\n→ Run `/setup_leaderboard` in leaderboard channel", color=mz('green'))
         await interaction.followup.send(embed=embed, ephemeral=True)
 
@@ -85,7 +97,7 @@ class SetupCog(BotHelpers, commands.Cog, name="Setup"):
         if emoji_5 and mc_5 is not None:
             updates['reaction_emoji_5'] = emoji_5; updates['reaction_mc_5'] = mc_5
             lines.append(f"{emoji_5} → {mc_5} {mc}")
-        await self.db.update_guild_config(str(interaction.guild_id), **updates)
+        if not await request_config_change(interaction, **updates):return
         await interaction.followup.send(embed=discord.Embed(title="✅ Reaction Emojis Set", description="\n".join(lines), color=mz('green')), ephemeral=True)
 
     @app_commands.command(name="setup_raffle_reaction", description="Set the emoji that grants the raffle role")
@@ -95,7 +107,7 @@ class SetupCog(BotHelpers, commands.Cog, name="Setup"):
         config = await self.require_admin(interaction)
         if config is None:
             return
-        await self.db.update_guild_config(str(interaction.guild_id), raffle_reaction_emoji=emoji.strip())
+        if not await request_config_change(interaction, raffle_reaction_emoji=emoji.strip()):return
         await interaction.followup.send(embed=discord.Embed(title="✅ Raffle Reaction Set", description=f"React with {emoji} to grant the raffle role.\nSet the role first with `/setup_raffle_role`.", color=mz('green')), ephemeral=True)
 
     @app_commands.command(name="setup_settings", description="Tune all numeric parameters")
@@ -122,7 +134,7 @@ class SetupCog(BotHelpers, commands.Cog, name="Setup"):
             updates['require_twitter_id'] = int(require_twitter_id); changed.append(f"Require X handle: **{require_twitter_id}**")
         if not updates:
             return await interaction.followup.send("No changes provided.", ephemeral=True)
-        await self.db.update_guild_config(str(interaction.guild_id), **updates)
+        if not await request_config_change(interaction, **updates):return
         await interaction.followup.send(embed=discord.Embed(title="✅ Settings Updated", description="\n".join(changed), color=mz('green')), ephemeral=True)
 
     @app_commands.command(name="setup_view", description="View current configuration")
@@ -140,11 +152,14 @@ class SetupCog(BotHelpers, commands.Cog, name="Setup"):
         config = await self.require_admin(interaction)
         if config is None:
             return
-        view = discord.ui.View(timeout=30)
+        view = AdminView(timeout=30)
         async def confirm(btn: discord.Interaction):
-            await self.db.update_guild_config(str(interaction.guild_id), is_configured=0, pro_role_id=None, basic_role_id=None, admin_role_id=None, bot_content_channel_id=None, submit_channel_id=None, showcase_channel_id=None, leaderboard_channel_id=None, review_channel_id=None, log_channel_id=None, credit_log_channel_id=None, mention_role_id=None, reaction_emoji_1=None, reaction_emoji_2=None, reaction_emoji_3=None, reaction_emoji_4=None, reaction_emoji_5=None, raffle_reaction_emoji=None, raffle_role_id=None, assignment_channel_id=None, leaderboard_message_id=None, panel_message_id=None)
-            await btn.response.edit_message(content="✅ Reset complete. Run `/setup_start` to reconfigure.", embed=None, view=None)
+            if btn.user.id != interaction.user.id or btn.guild_id != interaction.guild_id:
+                return await reply(btn, 'This reset confirmation belongs to another administrator.')
+            if not await request_config_change(btn, reason='Reset bot configuration; preserve users, balances and history', is_configured=0, pro_role_id=None, basic_role_id=None, admin_role_id=None, bot_content_channel_id=None, submit_channel_id=None, showcase_channel_id=None, leaderboard_channel_id=None, review_channel_id=None, log_channel_id=None, credit_log_channel_id=None, mention_role_id=None, reaction_emoji_1=None, reaction_emoji_2=None, reaction_emoji_3=None, reaction_emoji_4=None, reaction_emoji_5=None, raffle_reaction_emoji=None, raffle_role_id=None, assignment_channel_id=None):return
+            await btn.edit_original_response(content="✅ Reset complete. Run `/setup_start` to reconfigure. Primary-admin access is retained.", embed=None, view=None)
         async def cancel(btn: discord.Interaction):
+            if btn.user.id != interaction.user.id:return await reply(btn, 'This confirmation belongs to another administrator.')
             await btn.response.edit_message(content="Cancelled.", embed=None, view=None)
         b1 = discord.ui.Button(label="Confirm Reset", style=discord.ButtonStyle.danger)
         b2 = discord.ui.Button(label="Cancel", style=discord.ButtonStyle.secondary)
