@@ -1,0 +1,45 @@
+{
+  "Members": [
+    ["Discord ID", "discord_id", "text"], ["Username", "username", "text"], ["Display name", "display_name", "text"], ["X handle", "x_handle", "text"],
+    ["Joined (UTC)", "joined_at", "date"], ["Current member role", "current_member", "number"], ["Posts submitted", "posts_submitted", "number"],
+    ["Posts scored", "posts_scored", "number"], ["Mean post score", "average_post_score", "decimal"], ["Posts awaiting reviews", "posts_waiting_for_reviews", "number"],
+    ["Regular MC balance", "regular_mc", "decimal"], ["Golden MC balance", "golden_mc", "decimal"], ["Assignment MC balance", "assignment_mc", "decimal"],
+    ["Total MC balance", "total_mc", "decimal"], ["MC earned in window", "mc_earned_in_window", "decimal"], ["MC deducted in window", "mc_deducted_in_window", "decimal"],
+    ["Moderator score (full samples)", "moderator_score", "decimal"], ["Limited-sample score", "limited_evidence_score", "decimal"], ["Evaluations", "evaluations", "number"],
+    ["Indexed messages", "indexed_messages", "number"], ["Observed actions/reactions", "observed_bot_actions_reactions", "number"],
+    ["Participation", "participation", "text"], ["Current reviewer role", "current_reviewer", "number"], ["Post comment links recorded", "post_comment_links", "number"]
+  ],
+  "Reviewers": [
+    ["Discord ID", "discord_id", "text"], ["Username", "username", "text"], ["Display name", "display_name", "text"], ["X handle", "x_handle", "text"],
+    ["Current reviewer role", "current_reviewer", "number"], ["Assignments received", "assignments_received", "number"], ["Mature opportunities", "mature_opportunities", "number"],
+    ["Completed mature opportunities", "completed_mature_opportunities", "number"], ["Opportunity completion", "opportunity_completion_rate", "percent"],
+    ["Reviews submitted", "reviews_submitted", "number"], ["Future-due pending", "pending_future_due", "number"], ["Reassigned or removed", "reassigned_removed", "number"],
+    ["Mean response hours", "average_response_hours", "decimal"], ["Mean score given", "average_score_given", "decimal"], ["Comment links recorded", "comment_links_recorded", "number"],
+    ["Mean feedback characters", "mean_feedback_characters", "decimal"], ["Repeated feedback groups", "repeated_feedback_groups", "number"],
+    ["Peer score difference", "peer_score_difference", "decimal"], ["Peer comparisons", "peer_comparisons", "number"],
+    ["Moderator score (full samples)", "moderator_review_score", "decimal"], ["Limited-sample score", "limited_review_score", "decimal"],
+    ["Evaluations", "review_evaluations", "number"], ["Opportunity context", "review_opportunity_state", "text"]
+  ],
+  "Moderators": [
+    ["Discord ID", "discord_id", "text"], ["Username", "username", "text"], ["Display name", "display_name", "text"], ["Available", "available", "number"],
+    ["Weekly reviewer capacity", "reviewer_capacity", "number"], ["Weekly member capacity", "member_capacity", "number"], ["Assigned people/scopes", "assigned_people", "number"],
+    ["Evaluated people", "evaluated_people", "number"], ["Skipped without penalty", "skipped_people", "number"], ["Mean score given", "average_score_given", "decimal"],
+    ["Limited-sample evaluations", "limited_evidence_evaluations", "number"]
+  ],
+  "Posts": [
+    ["Post ID", "post_id", "text"], ["Author ID", "author_id", "text"], ["X post link", "tweet_link", "text"], ["Submitted (UTC)", "submitted_at", "date"],
+    ["Required reviews (saved)", "required_reviews", "number"], ["Reviews before cutoff", "reviews_before_cutoff", "number"], ["Observed mean score", "observed_mean_score", "decimal"],
+    ["Finalized before cutoff", "finalized_before_cutoff", "number"], ["Scenario regular MC", "scenario_regular", "decimal"], ["Scenario golden MC", "scenario_golden", "decimal"],
+    ["Current-rule regular MC", "current_regular", "decimal"], ["Current-rule golden MC", "current_golden", "decimal"]
+  ],
+  "Reviews": [
+    ["Review ID", "review_id", "text"], ["Post ID", "post_id", "text"], ["Reviewer ID", "reviewer_id", "text"], ["Content score", "score", "number"],
+    ["Submitted (UTC)", "submitted_at", "date"], ["X comment link", "twitter_comment", "text"], ["X post link", "tweet_link", "text"], ["Feedback", "summary", "text"], ["Author ID", "author_id", "text"]
+  ],
+  "Oversight": [
+    ["Evaluation ID", "id", "text"], ["Member ID", "user_id", "text"], ["Scope", "kind", "text"], ["Moderator ID", "moderator_id", "text"], ["Score 1-10", "score", "decimal"],
+    ["Limited evidence", "limited_evidence", "number"], ["Samples checked", "sample_count", "number"], ["Evaluated (UTC)", "created_at", "date"], ["Private feedback", "feedback", "text"],
+    ["Checked sample IDs", "checked_ids_json", "text"], ["Original score", "original_score", "decimal"],
+    ["Revised score", "revised_score", "decimal"], ["Revised (UTC)", "revised_at", "date"]
+  ]
+}
