@@ -11,15 +11,12 @@ class BotHelpers:
         return self.bot.db
 
     def is_admin(self, member: discord.Member, config: dict) -> bool:
-        if member.guild_permissions.administrator:
-            return True
-        if config.get('admin_role_id'):
-            role = member.guild.get_role(int(config['admin_role_id']))
-            if role and role in member.roles:
-                return True
-        if config.get('admin_user_id') and str(member.id) == str(config.get('admin_user_id')):
-            return True
-        return False
+        from access_policy import is_operator
+        return is_operator(member, config)
+
+    def is_primary_admin(self, member: discord.Member, config: dict) -> bool:
+        from access_policy import is_primary
+        return is_primary(member, config)
 
     def is_pro(self, member: discord.Member, config: dict) -> bool:
         if not config.get('pro_role_id'):
@@ -42,8 +39,10 @@ class BotHelpers:
         return await self.db.get_guild_config(guild_id)
 
     async def require_admin(self, interaction: discord.Interaction) -> Optional[dict]:
+        from role_utils import resolve_member
         config = await self.db.get_guild_config(str(interaction.guild_id)) or {}
-        if not self.is_admin(interaction.user, config):
+        member = await resolve_member(interaction.guild, interaction.user.id) if interaction.guild else None
+        if not self.is_admin(member, config):
             msg = "Administrator permission required."
             try:
                 if interaction.response.is_done():

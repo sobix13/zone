@@ -44,6 +44,8 @@ COGS = [
     'cogs.activity',
     'cogs.mc_tools',
     'cogs.health',
+    'cogs.review_support',
+    'cogs.governance',
 ]
 
 
