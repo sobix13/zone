@@ -26,6 +26,7 @@ def user_guide(config,is_reviewer,section=0):
 class UserGuideView(discord.ui.View):
     def __init__(self,user_id,config,is_reviewer,section=0):
         super().__init__(timeout=600)
+        self.add_item(discord.ui.Button(label='Privacy Policy',style=discord.ButtonStyle.link,url='https://github.com/sobix13/zone/blob/main/PRIVACY.md'))
         self.user_id=user_id;self.config=config;self.is_reviewer=is_reviewer;self.section=section
 
     async def interaction_check(self,interaction):
